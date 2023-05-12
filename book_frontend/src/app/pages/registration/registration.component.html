@@ -20,12 +20,12 @@
                     <hr>
                 </div>
 
-                <form *ngIf="signUp">
+                <form [formGroup]="registerForm" (ngSubmit)="createAccount()" *ngIf="signUp">
                     <div class="form-group">
                         <label for="">User Name</label>
                         <input type="text" class="form-control" formControlName="userName" placeholder="Enter Username">
                         <label for="">Mobile No.</label>
-                        <input type="text" class="form-control" formControlName="mobile" placeholder="Enter Username">
+                        <input type="text" class="form-control" formControlName="mobile" placeholder="Enter mobile">
                         <label for="">Email ID</label>
                         <input type="email" class="form-control" formControlName="email" placeholder="Email Id Here">
                         <label for="">Password</label>
@@ -37,7 +37,7 @@
                     </div>
                 </form>
 
-                <form *ngIf="login">
+                <form [formGroup]="LoginForm" (ngSubmit)="loginAccount()" *ngIf="login">
                     <div class="form-group">
                         <label for="">Email ID</label>
                         <input type="email" class="form-control" formControlName="email" placeholder="Email Id Here">

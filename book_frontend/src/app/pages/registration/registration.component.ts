@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { FormBuilder, Validators } from '@angular/forms';
+import { AppServiceService } from 'src/app/service/app-service.service';
 
 @Component({
   selector: 'app-registration',
@@ -13,7 +15,7 @@ export class RegistrationComponent implements OnInit {
   signUpBtn = true;
   loginBtn = false;
 
-  constructor() { }
+  constructor(private fb:FormBuilder,private service:AppServiceService) { }
 
   ngOnInit(): void {
   }
@@ -32,6 +34,32 @@ export class RegistrationComponent implements OnInit {
     
     this.signUpBtn = false;
     this.loginBtn = true;
+  }
+
+  registerForm = this.fb.group({
+    userName:["",Validators.required],
+    mobile:["",Validators.required],
+    email:["",Validators.required],
+    password:["",Validators.required]
+  })
+
+  LoginForm = this.fb.group({
+    email:["",Validators.required],
+    password:["",Validators.required]
+  })
+
+  createAccount(){
+    if(this.registerForm.valid){
+      this.service.createUser('/register',this.registerForm.value).subscribe((data:any)=>{
+        console.log(data);
+      })
+    }
+  }
+
+  loginAccount(){
+    this.service.createUser('/login',this.LoginForm.value).subscribe((data:any)=>{
+      console.log(data);
+    })
   }
 
 }
