@@ -1,0 +1,54 @@
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow-lg p-5 mt-5 mb-5">
+
+                <div class="row text-center" style="cursor: pointer;">
+                    <!-- <div [ngClass]="signUpBtn ? 'col-6 bg-info' : 'col-6 border border-warning'" (click)="signUpForm()"> -->
+                    <div class="col-6 bg-info" (click)="signUpForm()">
+                        <h3>SignUp</h3>
+                      </div>
+                      
+                      <!-- <div [ngClass]="loginBtn ? 'col-6 bg-info' : 'col-6 border border-warning'" (click)="loginForm()"> -->
+                      <div class="col-6 border border-warning" (click)="loginForm()">
+                        <h3>Login</h3>
+                      </div>
+                </div>
+
+                <div class="text-center mt-3">
+                    <h2>Welcome Here!</h2>
+                    <hr>
+                </div>
+
+                <form *ngIf="signUp">
+                    <div class="form-group">
+                        <label for="">User Name</label>
+                        <input type="text" class="form-control" formControlName="userName" placeholder="Enter Username">
+                        <label for="">Mobile No.</label>
+                        <input type="text" class="form-control" formControlName="mobile" placeholder="Enter Username">
+                        <label for="">Email ID</label>
+                        <input type="email" class="form-control" formControlName="email" placeholder="Email Id Here">
+                        <label for="">Password</label>
+                        <input type="password" class="form-control" formControlName="password"
+                            placeholder="Enter Password">
+                    </div> <br>
+                    <div class="d-grid gap-2">
+                        <button class="btn btn-outline-primary btn-block" type="submit">Create Account</button>
+                    </div>
+                </form>
+
+                <form *ngIf="login">
+                    <div class="form-group">
+                        <label for="">Email ID</label>
+                        <input type="email" class="form-control" formControlName="email" placeholder="Email Id Here">
+                        <label for="">Password</label>
+                        <input type="password" class="form-control" formControlName="password" placeholder="Enter Password">
+                    </div> <br>
+                    <div class="d-grid gap-2">
+                        <button class="btn btn-outline-primary btn-block" type="submit">Login</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

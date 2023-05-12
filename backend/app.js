@@ -1,12 +1,16 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const app = express();  
+
+const route = require('./routes');
 const cors = require('cors');
 const mongoose = require('./db.js');
-const app = express();  
-const route = require('../backend/routes.js');
-app.use(bodyParser.json());
 
-app.use(cors({origin:'http://localhost:4200'}));
+app.use(bodyParser.urlencoded({extended:false}))
+app.use(bodyParser.json());
+app.use(cors());
+
+// app.use(route);
 
 app.listen(8080,()=>{
     console.log("Server is started on 8080");

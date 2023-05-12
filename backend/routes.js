@@ -1,9 +1,72 @@
-const express = require('express');
-const router = express.Router();
-
-const mongoType = require('mongoose').Types;
-
+const router = require("express").Router();
+const User = require('./model/user');
+const bcrypt = require('bcrypt');
+const jwt = require("jsonwebtoken");
+const checkAuth = require('./middleware/check-auth');
 const Post = require('../backend/model/post.js');
+
+// const mongoType = require('mongoose').Types;
+// const Post = require('../backend/model/post.js');
+
+// Login
+router.post('/register', (req,res)=>{
+    
+    bcrypt.hash(req.body.password, 10, (err, hash)=>{
+        if(err){
+            return res.json({success:false, message:"Hash Error!"})
+        }else{
+            const user = new User({
+                userName: req.body.userName,
+                email: req.body.email,
+                password: hash,
+                mobile: req.body.mobile,
+            }) 
+        
+            user.save().then((_)=>{
+                res.json({success:true, message:"Account has been Created!"})
+            }).catch((err)=>{
+                console.log(err);
+                if(err.code === 11000){
+                    return res.json({success:false, message:'Email is Already Exist!'})
+                }
+                res.json({success:false, message:'Authentication Failed!'})
+            })
+        }
+    })
+
+})
+
+// Register
+router.post('/login', (req,res)=>{
+    User.find({email:req.body.email}).exec().then((result)=>{
+     if(result.length < 1){
+         return res.json({success:false, message:'User Not Found!'})
+     }else{
+         const user = result[0]
+         console.log(user);
+         bcrypt.compare(req.body.password, user.password, (err,res)=>{
+             if(res){
+                 const token = jwt.sign({userId: user._id}, "bookAuth")
+                 return res.json({success:true, token:token, message:'Login Successfull !'})
+             }else{
+                 return res.json({success:false, message:'Password does not match!'})
+             }
+         })
+     }
+    }).catch(err=>{
+     res.json({success:false, message:'Authentication Failed!'})
+    })
+})
+
+// Profile
+router.get('/profile', checkAuth, (req,res)=>{
+    const userId = req.userData.userId;
+    User.findById(userId).exec().then((result)=>{
+        res.json({success:true, data:result})
+    }).catch(err=>{
+        res.json({success:false, message:'Authentication Failed!'})
+    })
+})
 
 
 //create book
