@@ -12,4 +12,4 @@ app.listen(8080,()=>{
     console.log("Server is started on 8080");
 })
 
-// app.use(route);
+app.use(route);
