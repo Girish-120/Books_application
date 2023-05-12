@@ -8,7 +8,7 @@ const Post = require('../backend/model/post.js');
 // const mongoType = require('mongoose').Types;
 // const Post = require('../backend/model/post.js');
 
-// Login
+// Register
 router.post('/register', (req,res)=>{
     
     bcrypt.hash(req.body.password, 10, (err, hash)=>{
@@ -36,17 +36,19 @@ router.post('/register', (req,res)=>{
 
 })
 
-// Register
+// Login
 router.post('/login', (req,res)=>{
     User.find({email:req.body.email}).exec().then((result)=>{
      if(result.length < 1){
          return res.json({success:false, message:'User Not Found!'})
      }else{
          const user = result[0]
-         console.log(user);
-         bcrypt.compare(req.body.password, user.password, (err,res)=>{
-             if(res){
-                 const token = jwt.sign({userId: user._id}, "bookAuth")
+         bcrypt.compare(req.body.password, user.password, (err,ret)=>{
+             if(ret){
+                 const payload = {
+                     userId: user._id,
+                 }
+                 const token = jwt.sign(payload, "bookAuth")
                  return res.json({success:true, token:token, message:'Login Successfull !'})
              }else{
                  return res.json({success:false, message:'Password does not match!'})
@@ -57,6 +59,7 @@ router.post('/login', (req,res)=>{
      res.json({success:false, message:'Authentication Failed!'})
     })
 })
+
 
 // Profile
 router.get('/profile', checkAuth, (req,res)=>{
