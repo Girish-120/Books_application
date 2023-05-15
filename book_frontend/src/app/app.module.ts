@@ -10,7 +10,8 @@ import { AboutComponent } from './pages/about/about.component';
 import { ListingComponent } from './pages/listing/listing.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
-
+import { ProfileComponent } from './pages/profile/profile.component';
+import { CreateBookComponent } from './pages/create-book/create-book.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -18,7 +19,9 @@ import { HttpClientModule } from '@angular/common/http';
     FooterComponent,
     RegistrationComponent,
     AboutComponent,
-    ListingComponent
+    ListingComponent,
+    ProfileComponent,
+    CreateBookComponent
   ],
   imports: [
     BrowserModule,

@@ -1,5 +1,5 @@
 import{ Injectable } from '@angular/core';
-import{ HttpClient } from '@angular/common/http';
+import{ HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 
 @Injectable({
@@ -15,6 +15,19 @@ export class AppServiceService {
 
   loginUser(url:any,data:any){
     return this.http.post(environment.serverurl+url,data);
+  }
+
+  getprofile(url: any) {
+    let headers = new HttpHeaders().set('Authorization', 'Bearer ' + localStorage.getItem("token"));
+    return this.http.get(environment.serverurl + url, {headers:headers});
+  }
+
+  books(url:any, data:any){
+    return this.http.post(environment.serverurl+url,data);
+  }
+
+  getBooks(url:any){
+    return this.http.get(environment.serverurl+url);
   }
 
 }

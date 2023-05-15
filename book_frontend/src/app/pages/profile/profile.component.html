@@ -1,0 +1,41 @@
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow-lg p-5 mt-5 mb-5">
+                <div class="text-center">
+                    <h3>Welcome to Book Application App 🖤</h3> <hr>
+                </div>
+
+                <div>
+                    <table class="table table-striped">
+                        <tbody>
+                          <tr>
+                            <td>Name</td>
+                            <td>{{profileData?.userName}}</td>
+                          </tr>
+
+                          <tr>
+                            <td>Email</td>
+                            <td>{{profileData?.email}}</td>
+                          </tr>
+
+                          <tr>
+                            <td>Mobile</td>
+                            <td>{{profileData?.mobile}}</td>
+                          </tr>
+                        </tbody>
+                    </table>
+
+                   <div class="row">
+                       <div class="d-grid gap-3 col-6 ">
+                           <button class="btn btn-warning btn-block" type="submit" routerLink="/change-password">Change Password</button>
+                        </div>
+                        <div class="d-grid gap-3 col-6 mx-auto">
+                            <button class="btn btn-success btn-block" type="submit" routerLink="/createBook">Create Book</button>
+                        </div>
+                   </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

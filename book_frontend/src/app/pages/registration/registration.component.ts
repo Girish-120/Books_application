@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { AppServiceService } from 'src/app/service/app-service.service';
 
 @Component({
@@ -15,7 +16,7 @@ export class RegistrationComponent implements OnInit {
   signUpBtn = true;
   loginBtn = false;
 
-  constructor(private fb:FormBuilder,private service:AppServiceService) { }
+  constructor(private fb:FormBuilder,private service:AppServiceService,private router:Router) { }
 
   ngOnInit(): void {
   }
@@ -52,6 +53,9 @@ export class RegistrationComponent implements OnInit {
     if(this.registerForm.valid){
       this.service.createUser('/register',this.registerForm.value).subscribe((data:any)=>{
         console.log(data);
+        if(data.success == true){
+          this.loginForm();
+        }
       })
     }
   }
@@ -59,6 +63,10 @@ export class RegistrationComponent implements OnInit {
   loginAccount(){
     this.service.createUser('/login',this.LoginForm.value).subscribe((data:any)=>{
       console.log(data);
+      if(data.success == true){
+        localStorage.setItem('token', data.token);
+        this.router.navigateByUrl("/listing");
+      }
     })
   }
 
