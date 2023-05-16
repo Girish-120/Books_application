@@ -4,9 +4,33 @@ const bcrypt = require('bcrypt');
 const jwt = require("jsonwebtoken");
 const checkAuth = require('./middleware/check-auth');
 const Post = require('../backend/model/post.js');
+const multer = require('multer');
+const path = require('path');
+const mongoType = require('mongoose').Types;
 
-// const mongoType = require('mongoose').Types;
-// const Post = require('../backend/model/post.js');
+
+//upload book image
+const upload = multer({
+    storage: multer.diskStorage({
+        destination:(req, file, cb)=>{
+            console.log(req.file);
+            cb(null,'upload/images')
+        },
+        filename:(req,file,cb)=>{
+            cb(null,file.originalname+"-"+Date.now()+".jpg");
+            global.imageName = file.originalname;
+            return imageName;
+        }
+    })
+}).single("user_file");
+
+router.post('/upload',upload,(req,res)=>{
+    if (!req.file) {
+        return res.status(400).send('No file uploaded.');
+    }else{
+        res.send({success:true,message:"File uploaded successfully."});
+    }
+})
 
 // Register
 router.post('/register', (req,res)=>{
@@ -152,10 +176,12 @@ router.put('/editbookbyid/:id',(req,res)=>{
         price:req.body.price
     }
 
+    console.log(book);
+
     if(mongoType.ObjectId.isValid(req.params.id)){
         Post.findByIdAndUpdate(req.params.id,{$set:book},{new:true}).then((books,err)=>{
             if(books){
-                res.send({success:true,message:'record updated successfully',books});
+                res.send({error:0,message:'record updated successfully',books});
             }else{
                 res.status(400).send('Internal Error!'+err);
             }

@@ -30,4 +30,8 @@ export class AppServiceService {
     return this.http.get(environment.serverurl+url);
   }
 
+  editBooks(url:any,id:any){
+    return this.http.put(environment.serverurl+url,id)
+  }
+
 }

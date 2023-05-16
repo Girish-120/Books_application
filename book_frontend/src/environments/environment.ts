@@ -4,8 +4,8 @@
 
 export const environment = {
   production: false,
-  // serverurl:'http://localhost:8080'
-  serverurl:'http://192.168.1.8:8080'
+  serverurl:'http://localhost:8080'
+  // serverurl:'http://192.168.1.8:8080'
 };
 
 /*

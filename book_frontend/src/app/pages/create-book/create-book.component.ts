@@ -19,18 +19,8 @@ export class CreateBookComponent implements OnInit {
     book_description:['', Validators.required],
     author_name:['', Validators.required],
     publish_date:['', Validators.required],
-    price:['', Validators.required],
-    images:['', Validators.required]
+    price:['', Validators.required]
   })
-
-  uploadImage(){
-    this.service.books('/upload', this.bookDetails.value.images).subscribe((res:any)=>{
-      console.log("upload - ",res);
-      // if(res.success == true){
-      //   this.bookDetails.reset();
-      // }
-    })
-  }
 
   submitBook(){
     this.service.books('/createbook', this.bookDetails.value).subscribe((res:any)=>{

@@ -162,13 +162,13 @@
         </div>
         <div class="carousel-inner">
           <div class="carousel-item active">
-            <img src="https://loremflickr.com/100/40?lock=1" class="d-block w-100" alt="...">
+            <img src="assets/pexels-aline-viana-prado-2465877.jpg" class="d-block w-100" alt="..." style="height:450px;">
           </div>
           <div class="carousel-item">
-            <img src="https://loremflickr.com/100/40?lock=2" class="d-block w-100" alt="...">
+            <img src="assets/pexels-thought-catalog-904616.jpg" class="d-block w-100" alt="..." style="height:450px;">
           </div>
           <div class="carousel-item">
-            <img src="https://loremflickr.com/100/40?lock=3" class="d-block w-100" alt="...">
+            <img src="assets/pexels-min-an-694740.jpg" class="d-block w-100" alt="..." style="height:450px;">
           </div>
         </div>
         <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators"
@@ -220,92 +220,51 @@
               <span>{{books.author_name}}</span>
               <h5>$ {{books.price}}</h5>
               <a href="#" class="btn btn-primary">ADD TO CART</a>
+              <a data-bs-toggle="modal" data-bs-target="#exampleModal" class="btn btn-success" style="margin-left: 41px;padding: 6px 25px;" (click)="editBookById(books)">EDIT</a>
             </div>
           </div>
         </div>
-
-        <!-- <div class="col-md-4 mb-2">
-          <div class="card" style="width: 18rem;">
-            <div class="text-center">
-              <img src="https://demo2.madrasthemes.com/bookworm-html/redesigned-octo-fiesta/assets/img/150x226/img1.jpg"
-                class="card-img-top" alt="..." style="width: 200px; height: 230px;">
-            </div>
-            <div class="card-body">
-              <h5 class="card-title">Paper Back</h5>
-              <p class="card-text">The Last Sister (Columbia River Book 1)</p>
-              <span>Jay Shetty</span>
-              <h5>$ 30</h5>
-              <a href="#" class="btn btn-primary">ADD TO CART</a>
-            </div>
-          </div>
-        </div>
-
-        <div class="col-md-4 mb-2">
-          <div class="card" style="width: 18rem;">
-            <div class="text-center">
-              <img src="https://demo2.madrasthemes.com/bookworm-html/redesigned-octo-fiesta/assets/img/150x226/img1.jpg"
-                class="card-img-top" alt="..." style="width: 200px; height: 230px;">
-            </div>
-            <div class="card-body">
-              <h5 class="card-title">Paper Back</h5>
-              <p class="card-text">The Last Sister (Columbia River Book 1)</p>
-              <span>Jay Shetty</span>
-              <h5>$ 30</h5>
-              <a href="#" class="btn btn-primary">ADD TO CART</a>
-            </div>
-          </div>
-        </div>
-
-        <div class="col-md-4 mb-2">
-          <div class="card" style="width: 18rem;">
-            <div class="text-center">
-              <img src="https://demo2.madrasthemes.com/bookworm-html/redesigned-octo-fiesta/assets/img/150x226/img1.jpg"
-                class="card-img-top" alt="..." style="width: 200px; height: 230px;">
-            </div>
-            <div class="card-body">
-              <h5 class="card-title">Paper Back</h5>
-              <p class="card-text">The Last Sister (Columbia River Book 1)</p>
-              <span>Jay Shetty</span>
-              <h5>$ 30</h5>
-              <a href="#" class="btn btn-primary">ADD TO CART</a>
-            </div>
-          </div>
-        </div>
-
-        <div class="col-md-4 mb-2">
-          <div class="card" style="width: 18rem;">
-            <div class="text-center">
-              <img src="https://demo2.madrasthemes.com/bookworm-html/redesigned-octo-fiesta/assets/img/150x226/img1.jpg"
-                class="card-img-top" alt="..." style="width: 200px; height: 230px;">
-            </div>
-            <div class="card-body">
-              <h5 class="card-title">Paper Back</h5>
-              <p class="card-text">The Last Sister (Columbia River Book 1)</p>
-              <span>Jay Shetty</span>
-              <h5>$ 30</h5>
-              <a href="#" class="btn btn-primary">ADD TO CART</a>
-            </div>
-          </div>
-        </div>
-
-        <div class="col-md-4 mb-2">
-          <div class="card" style="width: 18rem;">
-            <div class="text-center">
-              <img src="https://demo2.madrasthemes.com/bookworm-html/redesigned-octo-fiesta/assets/img/150x226/img1.jpg"
-                class="card-img-top" alt="..." style="width: 200px; height: 230px;">
-            </div>
-            <div class="card-body">
-              <h5 class="card-title">Paper Back</h5>
-              <p class="card-text">The Last Sister (Columbia River Book 1)</p>
-              <span>Jay Shetty</span>
-              <h5>$ 30</h5>
-              <a href="#" class="btn btn-primary">ADD TO CART</a>
-            </div>
-          </div>
-        </div> -->
-
       </div>
-
+      
+      <!-- Edit Modal -->
+      <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <form [formGroup]="editForm" (ngSubmit)="editBooks()">
+                <div class="form-group">
+                  <label for="exampleInputEmail1">Book name</label>
+                  <input formControlName="book_name" type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter book name">
+                </div>
+                <div class="form-group">
+                  <label for="exampleInputPassword1">Book description</label>
+                  <input formControlName="book_description" type="text" class="form-control" id="exampleInputPassword1" placeholder="Enter book description">
+                </div>
+                <div class="form-group">
+                  <label for="authorname">Author name</label>
+                  <input formControlName="author_name" type="text" class="form-control" id="authorname" placeholder="Enter Author name">
+                </div>
+                <div class="form-group">
+                  <label for="publishdate">Publish date</label>
+                  <input formControlName="publish_date" type="date" class="form-control" id="publishdate" placeholder="Enter publish date">
+                </div>
+                <div class="form-group">
+                  <label for="bookPrice">Author name</label>
+                  <input formControlName="price" type="number" class="form-control" id="bookPrice" placeholder="Enter Book price">
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                  <button type="submit" class="btn btn-primary">Submit</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </div>
