@@ -3,14 +3,6 @@
     <div class="col-md-9">
       <h3>Listing Books</h3>
     </div>
-    <div class="col-md-3 ">
-      <nav aria-label="breadcrumb">
-        <ol class="breadcrumb">
-          <li class="breadcrumb-item"><a routerLink="/">Home</a></li>
-          <li class="breadcrumb-item active" aria-current="page"><a routerLink="/listing">Listing</a></li>
-        </ol>
-      </nav>
-    </div>
   </div>
   <hr>
   
@@ -210,6 +202,7 @@
       <div class="row">
         <div class="col-md-4 mb-2" *ngFor="let books of allBooks">
           <div class="card" style="width: 18rem;">
+            <i class="bi bi-trash-fill d-flex justify-content-end" style="color: red;cursor: pointer;margin: 10px;" (click)="deleteBook(books._id)"></i>
             <div class="text-center">
               <img src="https://demo2.madrasthemes.com/bookworm-html/redesigned-octo-fiesta/assets/img/150x226/img1.jpg"
                 class="card-img-top" alt="..." style="width: 200px; height: 230px;">

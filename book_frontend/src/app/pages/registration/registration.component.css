@@ -1,3 +1,7 @@
 .main-div{
-    background-color: ghostwhite;
+    background-image: url("../../../assets/front-view-stacked-books-ladders-education-day.jpg");
+    background-size: cover;
+    height: 611px;
+    width: 100%;
+    overflow: hidden;
 }

@@ -121,6 +121,8 @@ router.post('/createbook',(req,res)=>{
 //get all books
 router.get('/getallbooks',(req,res)=>{
     Post.find().then((books,err)=>{
+        const bookLength = books.length;
+        console.log(bookLength);
         if(books){
             res.send({success:true,message:'Books fetch successfully',books});
         }else{

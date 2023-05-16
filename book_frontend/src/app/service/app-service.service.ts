@@ -34,4 +34,8 @@ export class AppServiceService {
     return this.http.put(environment.serverurl+url,id)
   }
 
+  deleteBooks(url:any,id:any){
+    return this.http.delete(`${environment.serverurl}${url}${id}`);
+  }
+
 }

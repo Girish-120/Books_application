@@ -72,4 +72,15 @@ export class ListingComponent implements OnInit {
     })
   }
 
+  deleteBook(id:any){
+    this.service.deleteBooks('/deletebook/',id).subscribe((data:any)=>{
+      if(data.success == true){
+        this.toast.success("Success message",data.message);
+        this.ngOnInit();
+      }else{
+        this.toast.error('Error message',data.message);
+      }
+    })
+  }
+
 }
