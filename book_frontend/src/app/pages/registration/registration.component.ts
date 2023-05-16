@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AppServiceService } from 'src/app/service/app-service.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-registration',
@@ -16,7 +17,7 @@ export class RegistrationComponent implements OnInit {
   signUpBtn = true;
   loginBtn = false;
 
-  constructor(private fb:FormBuilder,private service:AppServiceService,private router:Router) { }
+  constructor(private fb:FormBuilder,private service:AppServiceService,private router:Router,private toast:ToastrService) { }
 
   ngOnInit(): void {
   }
@@ -54,7 +55,10 @@ export class RegistrationComponent implements OnInit {
       this.service.createUser('/register',this.registerForm.value).subscribe((data:any)=>{
         console.log(data);
         if(data.success == true){
+          this.toast.success('Success message',data.message);
           this.loginForm();
+        }else{
+          this.toast.error('Error message',data.message);
         }
       })
     }
@@ -64,8 +68,11 @@ export class RegistrationComponent implements OnInit {
     this.service.createUser('/login',this.LoginForm.value).subscribe((data:any)=>{
       console.log(data);
       if(data.success == true){
+        this.toast.success('Success message',data.message);
         localStorage.setItem('token', data.token);
         this.router.navigateByUrl("/listing");
+      }else{
+        this.toast.error('Error message',data.message);
       }
     })
   }

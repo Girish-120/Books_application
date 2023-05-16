@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AppServiceService } from 'src/app/service/app-service.service';
 import { FormBuilder, Validators } from '@angular/forms';
+import { ToastrService } from 'ngx-toastr';
 
 declare var $:any;
 
@@ -19,7 +20,7 @@ export class ListingComponent implements OnInit {
   allBooks:any;
   bookId: any;
 
-  constructor(private service:AppServiceService,private fb:FormBuilder) { }
+  constructor(private service:AppServiceService,private fb:FormBuilder,private toast:ToastrService) { }
 
   ngOnInit(): void {
     this.getAllBooks();
@@ -63,7 +64,10 @@ export class ListingComponent implements OnInit {
     this.service.editBooks('/editbookbyid/'+this.bookId,this.editForm.value).subscribe((data:any)=>{
       if(data.error == 0){
         $('#exampleModal').modal('hide');
+        this.toast.success("Success message",data.message);
         this.ngOnInit();
+      }else{
+        this.toast.error('Error message',data.message);
       }
     })
   }
