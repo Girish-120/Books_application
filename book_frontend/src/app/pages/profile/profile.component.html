@@ -9,7 +9,13 @@
 
                 <div>
                     <div class="container d-flex justify-content-center" style="margin-bottom: 15px;">
-                        <img src="assets/img_avatar.png" alt="Avatar" class="avatar" style="height: 100px;width: 100px;">
+                        <!-- <img src="assets/img_avatar.png" alt="Avatar" class="avatar"> -->
+
+                        <img [lazyLoad]="'http://localhost:8080/'+profileData?.profilePhoto?.path" defaultImage="assets\img_avatar.png" alt="Avatar" class="avatar">
+
+                        <label for="upload"> <i class="fa fa-camera" aria-hidden="true" style="color: coral; cursor: pointer;" ></i></label>
+                        <input type="file" name="" id="upload" style="display: none;" (change)="uploadImage($event)">
+                       
                     </div>
                     <table class="table table-striped">
                         <tbody>

@@ -6,6 +6,7 @@ import { ToastrService } from 'ngx-toastr';
 declare var $:any;
 declare var listView:any;
 declare var gridView:any;
+
 @Component({
   selector: 'app-listing',
   templateUrl: './listing.component.html',
@@ -25,6 +26,10 @@ export class ListingComponent implements OnInit {
 
   ngOnInit(): void {
     this.getAllBooks();
+
+    this.service.getValueChanged().subscribe((res:any)=>{
+        this.allBooks = res?.books    
+    })
   }
 
   openDiv(event:any){

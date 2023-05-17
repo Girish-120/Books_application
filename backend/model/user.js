@@ -8,7 +8,11 @@ const userSchema = new Schema({
     email:{type:String, unique:true},
     password:{type:String, required: true},
     mobile:{type:Number, unique: true},
-    book_item:{type:Number}
+    profilePhoto:
+    {
+        filename: String,
+        path: String
+    }
 })
 
 

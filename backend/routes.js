@@ -88,6 +88,20 @@ router.get('/profile', checkAuth, (req,res)=>{
     })
 })
 
+router.post('/upload-photo', upload.single('profilePhoto'), checkAuth, async (req,res)=>{
+    const { originalname, path } = req.file;
+
+    const userId = req.userData.userId;
+
+    const oneData = await User.findByIdAndUpdate(userId,  { profilePhoto: {filename: originalname ,path} }, {new : true});
+    if(!oneData){
+        return res.status(404).json({success:false, message: 'Record not found!'});
+    }else{
+        return res.status(200).json({success:true, message: 'Profile Image Updated Successfully !', data:oneData});
+    }
+    
+})
+
 
 //create book
 router.post('/createbook', upload.single('image'),(req,res)=>{
@@ -181,6 +195,24 @@ router.put('/editbookbyid/:id',(req,res)=>{
             res.status(400).send('Internal Error!');
         })
     }
+})
+
+// Search Api
+router.get('/search',(req,res)=>{
+    const { query } = req.query;
+
+    const searchQuery = {
+        $or: [
+            { book_name: { $regex: new RegExp(query, 'i') } },
+            { author_name: { $regex: new RegExp(query, 'i') } }
+          ]
+    };
+
+    Post.find(searchQuery).then((books) => {
+        res.send({success:true,message:'Books fetch successfully',books});
+    }).catch((error) => {
+        res.status(500).json({ error: 'An error occurred while searching for products', error });
+    });
 })
 
 module.exports = router;

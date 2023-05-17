@@ -23,4 +23,18 @@ export class ProfileComponent implements OnInit {
     });
   }
 
+  uploadImage(event:any){
+    console.log(event.target.files[0]);
+
+    const formData = new FormData();
+    formData.append('profilePhoto', event.target.files[0], event.target.files[0].name);
+    
+    this.service.uploadImage('/upload-photo',formData).subscribe((res:any)=>{
+      if(res.success == true){
+        this.getProfileDet();
+      }
+      
+    })
+  }
+
 }

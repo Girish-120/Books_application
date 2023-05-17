@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { AppServiceService } from 'src/app/service/app-service.service';
 
 @Component({
   selector: 'app-navbar',
@@ -8,7 +9,9 @@ import { Router } from '@angular/router';
 })
 export class NavbarComponent implements OnInit {
 
-  constructor(private route:Router) { }
+  query:any;
+
+  constructor(private route:Router, private service:AppServiceService) { }
 
   ngOnInit(): void {
   }
@@ -16,6 +19,17 @@ export class NavbarComponent implements OnInit {
   signOut(){
     localStorage.clear();
     this.route.navigate(['/']);
+  }
+
+  search() {
+    if (!this.query) {
+      return;
+    }else{
+      this.service.getBooks(`/search?query=${this.query}`).subscribe((res:any)=>{
+        // console.log(res);
+        this.service.bookFetched(res)
+      })
+    }
   }
 
 }
