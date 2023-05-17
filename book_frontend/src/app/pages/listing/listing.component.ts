@@ -4,7 +4,8 @@ import { FormBuilder, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 
 declare var $:any;
-
+declare var listView:any;
+declare var gridView:any;
 @Component({
   selector: 'app-listing',
   templateUrl: './listing.component.html',
@@ -12,10 +13,10 @@ declare var $:any;
 })
 export class ListingComponent implements OnInit {
 
-  authorList:boolean=false;
-  languageList:boolean=true;
+  authorList:boolean=true;
+  languageList:boolean=false;
   reviewList:boolean=false;
-  featuredList:boolean=true;
+  featuredList:boolean=false;
 
   allBooks:any;
   bookId: any;
@@ -81,6 +82,14 @@ export class ListingComponent implements OnInit {
         this.toast.error('Error message',data.message);
       }
     })
+  }
+
+  listView(){
+    listView();
+  }
+
+  gridView(){
+    gridView();
   }
 
 }

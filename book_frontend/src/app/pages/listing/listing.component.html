@@ -12,37 +12,41 @@
       <div class="row sideDiv">
         <div class="col-md-12" style="border: 1px solid grey;">
           <div class="row author">
-            <div class="col-sm-6">
-              <h3>Authors</h3>
+            <div class="col-sm-6" style="margin-top: 15px;">
+              <h3 class="filter_heading">Categories</h3>
             </div>
-            <div class="col-sm-6 icon" (click)="openDiv('author')"><i class="fa fa-plus" aria-hidden="true"></i></div>
-            <div class="row listItem" *ngIf="authorList">
-              <p>A.J. Finn</p>
-              <p>A.J. Finn</p>
-              <p>A.J. Finn</p>
+            <div class="col-sm-6 icon" (click)="openDiv('author')"><i class="fa fa-plus icons" aria-hidden="true"></i></div>
+            <div class="row listItem" *ngIf="authorList" style="margin-left: -2px;">
+              <p>Clothing</p>
+              <p>Electronics</p>
+              <p>Kitchen</p>
+              <p>Music</p>
+              <p>Posters</p>
+              <p>Scuba gear</p>
+              <p>Sweatshirts</p>
             </div>
           </div>
-          <hr>
+          <hr class="line">
 
           <div class="row language">
             <div class="col-sm-6">
-              <h3>Language</h3>
+              <h3 class="filter_heading">Language</h3>
             </div>
-            <div class="col-sm-6 icon" (click)="openDiv('language')"><i class="fa fa-plus" aria-hidden="true"></i></div>
-            <div class="row listItem" *ngIf="languageList">
+            <div class="col-sm-6 icon" (click)="openDiv('language')"><i style="margin: 10px 0px 0px 79px;" class="fa fa-plus" aria-hidden="true"></i></div>
+            <div class="row listItem" *ngIf="languageList" style="margin-left: -2px;">
               <p>English</p>
               <p>Hindi</p>
               <p>Punjabi</p>
             </div>
           </div>
-          <hr>
+          <hr class="line">
 
           <div class="row review">
             <div class="col-sm-6">
-              <h3>By Review</h3>
+              <h3 class="filter_heading">By Review</h3>
             </div>
-            <div class="col-sm-6 icon" (click)="openDiv('review')"><i class="fa fa-plus" aria-hidden="true"></i></div>
-            <div class="row listItem reviewItems" *ngIf="reviewList">
+            <div class="col-sm-6 icon" (click)="openDiv('review')"><i style="margin: 10px 0px 0px 79px;" class="fa fa-plus" aria-hidden="true"></i></div>
+            <div class="row listItem reviewItems" *ngIf="reviewList" style="margin-left: -2px;">
               <div class="row">
                 <div class="col-sm-2"><input type="checkbox" name="" id=""></div>
                 <div class="col-sm-8">
@@ -99,14 +103,14 @@
 
             </div>
           </div>
-          <hr>
+          <hr class="line">
 
           <div class="row featured">
             <div class="col-sm-6">
-              <h3>Featured</h3>
+              <h3 class="filter_heading">Featured</h3>
             </div>
-            <div class="col-sm-6 icon" (click)="openDiv('featured')"><i class="fa fa-plus" aria-hidden="true"></i></div>
-            <div class="row listItem" *ngIf="featuredList">
+            <div class="col-sm-6 icon" (click)="openDiv('featured')"><i style="margin: 10px 0px 0px 79px;" class="fa fa-plus" aria-hidden="true"></i></div>
+            <div class="row listItem" *ngIf="featuredList" style="margin-left: -2px;">
               <div class="row mb-2">
                 <div class="col-sm-4">
                   <img src="https://demo2.madrasthemes.com/bookworm-html/redesigned-octo-fiesta/assets/img/150x226/img1.jpg" alt="" >
@@ -136,7 +140,7 @@
               </div>
             </div>
           </div>
-          <hr>
+          <hr class="line">
 
         </div>
       </div>
@@ -176,7 +180,7 @@
       </div>
 
       <div class="row mt-3">
-        <div class="col-md-8">
+        <div class="col-md-6">
           <h4>Showing 1–12 of 126 results</h4>
         </div>
         <div class="col-md-2">
@@ -196,19 +200,23 @@
             <option value="show50">Show 50</option>
           </select>
         </div>
+        <div class="col-md-2" id="btnContainer">
+          <button class="btn" (click)="listView()"><i class="fa fa-bars"></i> List</button> 
+          <button class="btn active" (click)="gridView()"><i class="fa fa-th-large"></i> Grid</button>
+        </div>
       </div>
       <hr>
 
       <div class="row">
-        <div class="col-md-4 mb-2" *ngFor="let books of allBooks">
+        <div class="col-md-4 mb-2 column" *ngFor="let books of allBooks">
           <div class="card" style="width: 18rem;">
             <i class="bi bi-trash-fill d-flex justify-content-end" style="color: red;cursor: pointer;margin: 10px;" (click)="deleteBook(books._id)"></i>
             <div class="text-center">
-                <img lazyLoad="'http://localhost:8080/'+books.image?.path" defaultImage="assets\bb-social-share-v1.jpg" alt="Uploaded Image" class="card-img-top" style="width: 200px; height: 230px;">
+                <img [lazyLoad]="'http://localhost:8080/'+books.image?.path" defaultImage="assets\bb-social-share-v1.jpg" alt="Uploaded Image" class="card-img-top" style="width: 200px; height: 230px;">
             </div>
             <div class="card-body">
               <h5 class="card-title">{{books.book_name}}</h5>
-              <p class="card-text">{{books.book_description}}</p>
+              <p class="card-text card-content">{{books.book_description}}</p>
               <span>{{books.author_name}}</span>
               <h5>$ {{books.price}}</h5>
               <a href="#" class="btn btn-primary">ADD TO CART</a>
