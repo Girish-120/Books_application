@@ -13,6 +13,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { ProfileComponent } from './pages/profile/profile.component';
 import { CreateBookComponent } from './pages/create-book/create-book.component';
 import { ToastrModule } from 'ngx-toastr';
+import { LazyLoadImageModule } from 'ng-lazyload-image';
 
 @NgModule({
   declarations: [
@@ -31,7 +32,8 @@ import { ToastrModule } from 'ngx-toastr';
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
-    ToastrModule.forRoot()
+    ToastrModule.forRoot(),
+    LazyLoadImageModule
   ],
   providers: [],
   bootstrap: [AppComponent]
