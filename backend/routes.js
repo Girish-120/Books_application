@@ -4,33 +4,27 @@ const bcrypt = require('bcrypt');
 const jwt = require("jsonwebtoken");
 const checkAuth = require('./middleware/check-auth');
 const Post = require('../backend/model/post.js');
-const multer = require('multer');
-const path = require('path');
 const mongoType = require('mongoose').Types;
 
+const path = require('path');
+const express = require('express');
+const multer = require('multer');
 
-//upload book image
-const upload = multer({
-    storage: multer.diskStorage({
-        destination:(req, file, cb)=>{
-            console.log(req.file);
-            cb(null,'upload/images')
-        },
-        filename:(req,file,cb)=>{
-            cb(null,file.originalname+"-"+Date.now()+".jpg");
-            global.imageName = file.originalname;
-            return imageName;
-        }
-    })
-}).single("user_file");
-
-router.post('/upload',upload,(req,res)=>{
-    if (!req.file) {
-        return res.status(400).send('No file uploaded.');
-    }else{
-        res.send({success:true,message:"File uploaded successfully."});
+// Configure Multer for image uploads
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+      cb(null, 'uploads/');
+    },
+    filename: function (req, file, cb) {
+      cb(null, file.originalname);
     }
-})
+});
+  
+const upload = multer({ storage: storage });
+
+// Serve static files from the 'uploads' directory
+router.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+
 
 // Register
 router.post('/register', (req,res)=>{
@@ -49,7 +43,7 @@ router.post('/register', (req,res)=>{
             user.save().then((_)=>{
                 res.json({success:true, message:"Account has been Created!"})
             }).catch((err)=>{
-                console.log(err);
+                
                 if(err.code === 11000){
                     return res.json({success:false, message:'Email is Already Exist!'})
                 }
@@ -84,7 +78,6 @@ router.post('/login', (req,res)=>{
     })
 })
 
-
 // Profile
 router.get('/profile', checkAuth, (req,res)=>{
     const userId = req.userData.userId;
@@ -97,23 +90,27 @@ router.get('/profile', checkAuth, (req,res)=>{
 
 
 //create book
-router.post('/createbook',(req,res)=>{
+router.post('/createbook', upload.single('image'),(req,res)=>{
+    const { originalname, path } = req.file;
+
     let book = new Post({
         book_name:req.body.book_name,
         book_description:req.body.book_description,
         author_name:req.body.author_name,
         publish_date:req.body.publish_date,
-        price:req.body.price
+        price:req.body.price,
+        image: {
+            filename: originalname ,path
+        }
     })
 
     book.save().then((books,err)=>{
         if(books){
-            res.send({success:true,message:'Books created successfully'});
+            res.send({success:true,message:'Books created successfully', books});
         }else{
             res.status(400).send({success:false,message:'Internal Error!'});
         }
     }).catch(err=>{
-        console.log("Internal Error!");
         res.status(400).send({success:false,message:'Internal Error!',err});
     })
 })
@@ -127,10 +124,11 @@ router.get('/getallbooks',(req,res)=>{
             res.status(400).send({success:false,message:'Internal Error!'})
         }
     }).catch(err=>{
-        console.log("Internal Error!");
         res.status(400).send({success:false,message:'Internal Error!',err});
     })
+
 })
+
 
 //delete book 
 router.delete('/deletebook/:id',(req,res)=>{
@@ -142,11 +140,8 @@ router.delete('/deletebook/:id',(req,res)=>{
                 res.status(400).send({success:false,message:'Internal Error!'});
             }
         }).catch(err=>{
-            console.log("Internal Error!");
             res.status(400).send({success:false,message:'Internal Error!',err});
         })
-    }else{
-        console.log("hello");
     }
 })
 
@@ -157,7 +152,6 @@ router.get("/getbook/:id",(req,res)=>{
             if(books){
                 res.send({success:true,message:'book fetch successfully',books});
             }else{
-                console.log('Internal Error' + err);
                 res.status(400).send('Internal Error' + err);
             }
         }).catch(err=>{
@@ -175,8 +169,6 @@ router.put('/editbookbyid/:id',(req,res)=>{
         publish_date:req.body.publish_date,
         price:req.body.price
     }
-
-    console.log(book);
 
     if(mongoType.ObjectId.isValid(req.params.id)){
         Post.findByIdAndUpdate(req.params.id,{$set:book},{new:true}).then((books,err)=>{

@@ -204,8 +204,7 @@
           <div class="card" style="width: 18rem;">
             <i class="bi bi-trash-fill d-flex justify-content-end" style="color: red;cursor: pointer;margin: 10px;" (click)="deleteBook(books._id)"></i>
             <div class="text-center">
-              <img src="https://demo2.madrasthemes.com/bookworm-html/redesigned-octo-fiesta/assets/img/150x226/img1.jpg"
-                class="card-img-top" alt="..." style="width: 200px; height: 230px;">
+                <img [src]="'http://localhost:8080/'+books.image?.path" alt="Uploaded Image" class="card-img-top" style="width: 200px; height: 230px;">
             </div>
             <div class="card-body">
               <h5 class="card-title">{{books.book_name}}</h5>

@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, Validators } from '@angular/forms';
+import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { AppServiceService } from 'src/app/service/app-service.service';
 import { ToastrService } from 'ngx-toastr';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-create-book',
@@ -10,7 +11,10 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class CreateBookComponent implements OnInit {
 
-  constructor(private fb:FormBuilder, private service:AppServiceService,private toast:ToastrService) { }
+  // bookDetails: FormGroup;
+  image: any;
+  
+  constructor(private fb:FormBuilder, private service:AppServiceService,private toast:ToastrService,private router:Router) { }
 
   ngOnInit(): void {
   }
@@ -23,12 +27,24 @@ export class CreateBookComponent implements OnInit {
     price:['', Validators.required]
   })
 
+  onSelectFile(event:any) {
+    this.image = event.target.files[0];
+  }
+ 
   submitBook(){
-    this.service.books('/createbook', this.bookDetails.value).subscribe((res:any)=>{
-      console.log(res);
+
+    const formData = new FormData();
+    formData.append('book_name', this.bookDetails.value.book_name);
+    formData.append('book_description', this.bookDetails.value.book_description);
+    formData.append('author_name', this.bookDetails.value.author_name);
+    formData.append('publish_date', this.bookDetails.value.publish_date);
+    formData.append('price', this.bookDetails.value.price);
+    formData.append('image', this.image, this.image.name);
+    
+    this.service.books('/createbook',formData).subscribe((res:any)=>{
       if(res.success == true){
         this.toast.success('Success message',res.message);
-        this.bookDetails.reset();
+        this.router.navigateByUrl("/listing");
       }else{
         this.toast.error('Error message',res.message);
       }

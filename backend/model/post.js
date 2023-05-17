@@ -5,7 +5,12 @@ const Post = mongoose.model('post',{
     book_description:{type:String},
     author_name:{type:String},
     publish_date:{type:Date},
-    price:{type:Number}
+    price:{type:Number},
+    image:
+    {
+        filename: String,
+        path: String
+    }
 })
 
 module.exports = Post;

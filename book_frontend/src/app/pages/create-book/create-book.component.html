@@ -7,7 +7,6 @@
                     <h2>Welcome Here to Upload New Book! 🖤</h2>
                     <hr>
                 </div>
-
                 <form [formGroup]="bookDetails" (ngSubmit)="submitBook()">
                     <div class="form-group">
                         <label for="">Book Name</label>
@@ -20,8 +19,8 @@
                         <input type="date" class="form-control" formControlName="publish_date">
                         <label for="">Price</label>
                         <input type="number" class="form-control" formControlName="price" placeholder="Enter Price">
-                        <!-- <label for="">Upload Image</label>
-                        <input type="file" class="form-control" formControlName="images" > -->
+                        <label for="">Upload Image</label>
+                        <input type="file"  class="form-control" id="image" name="image" (change)="onSelectFile($event)" required>
                     </div> <br>
 
                     <div class="d-grid gap-2">
