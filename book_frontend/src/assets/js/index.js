@@ -1,5 +1,6 @@
 // Get the elements with class="column"
 var elements = document.getElementsByClassName("column");
+var className = document.getElementsByClassName("like");
 
 // Declare a loop variable
 var i;
@@ -10,6 +11,8 @@ function listView() {
     // elements[i].style.width = "100%";
     elements[i].classList.remove('col-md-4');
     elements[i].classList.add('col-md-12');
+    className[i].style.width = "100%";
+    className[i].style.flexDirection = "row";
   }
 }
 
@@ -18,6 +21,8 @@ function gridView() {
   for (i = 0; i < elements.length; i++) {
     elements[i].classList.remove('col-md-12');
     elements[i].classList.add('col-md-4');
+    className[i].style.width = "18rem";
+    className[i].style.flexDirection = "column";
   }
 }
 

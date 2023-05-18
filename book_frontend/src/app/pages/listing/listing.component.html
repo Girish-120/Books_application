@@ -30,20 +30,23 @@
 
           <div class="row language">
             <div class="col-sm-6">
-              <h3 class="filter_heading">Language</h3>
+              <h3 class="filter_heading">Author</h3>
             </div>
             <div class="col-sm-6 icon" (click)="openDiv('language')"><i style="margin: 10px 0px 0px 79px;" class="fa fa-plus" aria-hidden="true"></i></div>
             <div class="row listItem" *ngIf="languageList" style="margin-left: -2px;">
-              <p>English</p>
-              <p>Hindi</p>
-              <p>Punjabi</p>
+              <p>A. J. Finn</p>
+              <p>Anne Frank</p>
+              <p>Camille Pagán</p>
+              <p>Daniel H. Pink</p>
+              <p>Danielle Steel</p>
+              <p>David Quammen</p>
             </div>
           </div>
           <hr class="line">
 
           <div class="row review">
             <div class="col-sm-6">
-              <h3 class="filter_heading">By Review</h3>
+              <h3 class="filter_heading">Language</h3>
             </div>
             <div class="col-sm-6 icon" (click)="openDiv('review')"><i style="margin: 10px 0px 0px 79px;" class="fa fa-plus" aria-hidden="true"></i></div>
             <div class="row listItem reviewItems" *ngIf="reviewList" style="margin-left: -2px;">
@@ -209,13 +212,13 @@
 
       <div class="row">
         <div class="col-md-4 mb-2 column" *ngFor="let books of allBooks">
-          <div class="card" style="width: 18rem;">
+          <div class="card like" style="width: 18rem;">
             <i class="bi bi-trash-fill d-flex justify-content-end" style="color: red;cursor: pointer;margin: 10px;" (click)="deleteBook(books._id)"></i>
             <div class="text-center">
                 <img [lazyLoad]="'http://localhost:8080/'+books.image?.path" defaultImage="assets\bb-social-share-v1.jpg" alt="Uploaded Image" class="card-img-top" style="width: 200px; height: 230px;">
             </div>
             <div class="card-body">
-              <h5 class="card-title">{{books.book_name}}</h5>
+              <h5 class="card-title book-name">{{books.book_name}}</h5>
               <p class="card-text card-content">{{books.book_description}}</p>
               <span>{{books.author_name}}</span>
               <h5>$ {{books.price}}</h5>
@@ -231,7 +234,7 @@
         <div class="modal-dialog">
           <div class="modal-content">
             <div class="modal-header">
-              <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+              <h5 class="modal-title" id="exampleModalLabel">Edit Book</h5>
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
