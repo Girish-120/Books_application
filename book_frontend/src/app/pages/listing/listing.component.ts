@@ -21,6 +21,7 @@ export class ListingComponent implements OnInit {
 
   allBooks:any;
   bookId: any;
+  dataSlice: any;
 
   constructor(private service:AppServiceService,private fb:FormBuilder,private toast:ToastrService) { }
 
@@ -95,6 +96,22 @@ export class ListingComponent implements OnInit {
 
   gridView(){
     gridView();
+  }
+
+  sortItemsByPrice(event:any){
+    if(event.target.value == "asc"){
+      this.allBooks.sort((a:any,b:any)=>a.price - b.price);
+    }else if(event.target.value == "desc"){
+      this.allBooks.sort((a:any,b:any)=>b.price - a.price);
+    }else if(event.target.value == "newness"){
+      const sortedArray = this.allBooks.sort((a:any, b:any) => {
+        const dateA = new Date(a.publish_date);
+        const dateB = new Date(b.publish_date);
+        return dateB.getTime() - dateA.getTime();
+      });
+    }else{
+      this.getAllBooks();
+    }
   }
 
 }

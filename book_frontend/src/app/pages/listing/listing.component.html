@@ -1,6 +1,6 @@
 <div class="container-fluid">
   <div class="row p-3">
-    <div class="col-md-9">
+    <div class="col-md-9 d-flex justify-content-center w-100">
       <h3>Listing Books</h3>
     </div>
   </div>
@@ -187,7 +187,7 @@
           <h4>Showing 1–12 of 126 results</h4>
         </div>
         <div class="col-md-2">
-          <select name="" id="">
+          <select name="" id="" (change)="sortItemsByPrice($event)">
             <option value="default">Default Sorting</option>
             <option value="newness">Newness</option>
             <option value="asc">Low to High</option>
