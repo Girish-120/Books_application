@@ -1,0 +1,55 @@
+.aboutImg img{
+    background-size: cover;
+    width: 100%;
+}
+.aboutImg{
+    padding: 0;
+}
+
+.main-container{
+    position: relative;
+    top: -100px;
+}
+
+.user-conatiner{
+    font-size: 25px;
+    font-weight: 600;
+}
+
+.feature__icon i{
+    color: #f75454;
+    font-size: 50px;
+}
+
+.owl-carousel {
+    margin-bottom: 20px;
+  }
+  
+  .owl-carousel .slider-item {
+    text-align: center;
+  }
+  
+  .owl-carousel .slider-item img {
+    display: block;
+    width: 100%;
+    height: auto;
+    border-radius: 5px;
+  }
+
+  .newsletter input{
+    width: 40vw;
+    height: 60px;
+  }
+
+  .newsletter button{
+    background-color: black;
+    color: whitesmoke;
+    height: 100%;
+    width: 8vw;
+  }
+
+  .project{
+    font-weight:700;
+    font-size: 30px;
+  }
+  
