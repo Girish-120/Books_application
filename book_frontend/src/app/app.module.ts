@@ -14,6 +14,8 @@ import { ProfileComponent } from './pages/profile/profile.component';
 import { CreateBookComponent } from './pages/create-book/create-book.component';
 import { ToastrModule } from 'ngx-toastr';
 import { LazyLoadImageModule } from 'ng-lazyload-image';
+import { BrowserAnimationsModule  } from '@angular/platform-browser/animations';
+import { NgxPaginationModule } from 'ngx-pagination';
 
 @NgModule({
   declarations: [
@@ -33,7 +35,9 @@ import { LazyLoadImageModule } from 'ng-lazyload-image';
     ReactiveFormsModule,
     HttpClientModule,
     ToastrModule.forRoot(),
-    LazyLoadImageModule
+    LazyLoadImageModule,
+    BrowserAnimationsModule,
+    NgxPaginationModule
   ],
   providers: [],
   bootstrap: [AppComponent]

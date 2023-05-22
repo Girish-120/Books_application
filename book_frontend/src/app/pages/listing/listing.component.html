@@ -184,17 +184,17 @@
 
       <div class="row mt-3">
         <div class="col-md-6">
-          <h4>Showing 1–12 of 126 results</h4>
+          <h4><span class="text-success">Total books:</span> {{bookLength}}</h4>
         </div>
-        <div class="col-md-2">
-          <select name="" id="" (change)="sortItemsByPrice($event)">
+        <div class="col-md-4">
+          <select name="" id="" (change)="sortItemsByPrice($event)" style="margin-left:100px;width: 63%;border:none;font-size: 16px;font-weight: 500;">
             <option value="default">Default Sorting</option>
             <option value="newness">Newness</option>
             <option value="asc">Low to High</option>
             <option value="desc">High to Low</option>
           </select>
         </div>
-        <div class="col-md-2">
+        <!-- <div class="col-md-2">
           <select name="" id="">
             <option value="show10">Show 10</option>
             <option value="show20">Show 20</option>
@@ -202,8 +202,8 @@
             <option value="show40">Show 40</option>
             <option value="show50">Show 50</option>
           </select>
-        </div>
-        <div class="col-md-2" id="btnContainer">
+        </div> -->
+        <div class="col-md-2" id="btnContainer" style="margin-top: -10px;">
           <button class="btn" (click)="listView()"><i class="fa fa-bars"></i> List</button> 
           <button class="btn active" (click)="gridView()"><i class="fa fa-th-large"></i> Grid</button>
         </div>
@@ -211,7 +211,7 @@
       <hr>
 
       <div class="row">
-        <div class="col-md-4 mb-2 column" *ngFor="let books of allBooks">
+        <div class="col-md-4 mb-2 column" *ngFor="let books of allBooks| paginate: { itemsPerPage: 10, currentPage: p }">
           <div class="card like" style="width: 18rem;">
             <i class="bi bi-trash-fill d-flex justify-content-end" style="color: red;cursor: pointer;margin: 10px;" (click)="deleteBook(books._id)"></i>
             <div class="text-center">
@@ -227,6 +227,7 @@
             </div>
           </div>
         </div>
+        <pagination-controls (pageChange)="p = $event"></pagination-controls>
       </div>
       
       <!-- Edit Modal -->
@@ -269,5 +270,28 @@
         </div>
       </div>
     </div>
+  </div>
+</div>
+<div class="container">
+  <div class="mb-5 mb-lg-10">
+      <div class="row mb-3">
+          <div class="col-md-5">
+              <hr style="position: absolute;width: 42%;left: 0;">
+          </div>
+          <div class="col-md-2 text-center">
+              <h3>Latest Book</h3>
+          </div>
+          <div class="col-md-5">
+              <hr style="width: 125%;">
+          </div>
+      </div>
+
+      <div class="owl-carousel">
+          <div class="slider-item" *ngFor="let books of allBooks"><img [lazyLoad]="'http://localhost:8080/'+books.image?.path" defaultImage="assets\bb-social-share-v1.jpg" alt="Uploaded Image" class="card-img-top" style="width: 200px; height: 230px;margin-left: 32px;">
+            <h5 class="card-title book-name">{{books.book_name}}</h5>
+            <p class="card-text card-content">{{books.book_description}}</p>
+            <span>{{books.author_name}}</span>
+          </div>
+      </div>
   </div>
 </div>

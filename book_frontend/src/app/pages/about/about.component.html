@@ -146,25 +146,26 @@
         <div class="mb-5 mb-lg-10">
             <div class="row mb-3">
                 <div class="col-md-5">
-                    <hr>
+                    <hr style="position: absolute;width: 42%;left: 0;">
                 </div>
                 <div class="col-md-2 text-center">
-                    <h3>Our Team</h3>
+                    <h3>Blogs</h3>
                 </div>
                 <div class="col-md-5">
-                    <hr>
+                    <hr style="width: 125%;">
                 </div>
             </div>
-
-            <div class="owl-carousel">
-                <div class="slider-item"><img src="../../../assets/img_avatar.png" alt="Image 1"></div>
-                <div class="slider-item"><img src="../../../assets/img_avatar.png" alt="Image 2"></div>
-                <div class="slider-item"><img src="../../../assets/img_avatar.png" alt="Image 3"></div>
-                <div class="slider-item"><img src="../../../assets/img_avatar.png" alt="Image 4"></div>
-                <div class="slider-item"><img src="../../../assets/img_avatar.png" alt="Image 5"></div>
+      
+            <div class="owl-carousel" style="width: 64%;display: flex;">
+                <div class="slider-item" *ngFor="let blogs of allBlogs">
+                  <h5 class="card-title book-name">{{blogs.blog_related_to}}</h5>
+                  <p class="card-text card-content">{{blogs.blog_content}}</p>
+                  <span>{{blogs.blog_name}}</span>
+                </div>
             </div>
+            <button style="margin-left: 500px;" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#exampleModal">Create blog</button>
         </div>
-    </div>
+      </div>
 
     <div class="container">
         <div class="mb-5 mb-lg-10">
@@ -191,3 +192,38 @@
         </div>
     </div>
 </div>
+
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Create blog</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form [formGroup]="blogForm" (ngSubmit)="createNewBlog()">
+            <div class="form-group">
+              <label for="exampleInputEmail1">blog name</label>
+              <input formControlName="blog_name" type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter book name">
+            </div>
+            <div class="form-group">
+              <label for="exampleInputPassword1">blog content</label>
+              <input formControlName="blog_content" type="text" class="form-control" id="exampleInputPassword1" placeholder="Enter book description">
+            </div>
+            <div class="form-group">
+              <label for="authorname">blog related to</label>
+              <input formControlName="blog_related_to" type="text" class="form-control" id="authorname" placeholder="Enter Author name">
+            </div>
+            <div class="form-group">
+              <label for="publishdate">blog date</label>
+              <input formControlName="blog_date" type="date" class="form-control" id="publishdate" placeholder="Enter publish date">
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+              <button type="submit" class="btn btn-primary">Submit</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>

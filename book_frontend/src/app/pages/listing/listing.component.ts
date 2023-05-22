@@ -6,6 +6,7 @@ import { ToastrService } from 'ngx-toastr';
 declare var $:any;
 declare var listView:any;
 declare var gridView:any;
+declare var owl:any;
 
 @Component({
   selector: 'app-listing',
@@ -22,6 +23,9 @@ export class ListingComponent implements OnInit {
   allBooks:any;
   bookId: any;
   dataSlice: any;
+  items:any = [];
+  p: number = 1;
+  bookLength: any;
 
   constructor(private service:AppServiceService,private fb:FormBuilder,private toast:ToastrService) { }
 
@@ -51,6 +55,8 @@ export class ListingComponent implements OnInit {
   getAllBooks(){
     this.service.getBooks('/getallbooks').subscribe((res:any)=>{
       this.allBooks = res.books
+      this.bookLength = res.book_length;
+      owl();
     })
   }
 
@@ -99,18 +105,12 @@ export class ListingComponent implements OnInit {
   }
 
   sortItemsByPrice(event:any){
-    if(event.target.value == "asc"){
-      this.allBooks.sort((a:any,b:any)=>a.price - b.price);
-    }else if(event.target.value == "desc"){
-      this.allBooks.sort((a:any,b:any)=>b.price - a.price);
-    }else if(event.target.value == "newness"){
-      const sortedArray = this.allBooks.sort((a:any, b:any) => {
-        const dateA = new Date(a.publish_date);
-        const dateB = new Date(b.publish_date);
-        return dateB.getTime() - dateA.getTime();
-      });
-    }else{
+    if(event.target.value == "default"){
       this.getAllBooks();
+    }else{
+      this.service.getFilteredData("/filter?query="+event.target.value).subscribe((data:any)=>{
+        this.allBooks = data;
+      })
     }
   }
 

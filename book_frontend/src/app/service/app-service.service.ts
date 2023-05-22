@@ -56,4 +56,16 @@ export class AppServiceService {
     return this.valueChanged.asObservable();
   }
 
+  getBlogs(url:any){
+   return this.http.get(environment.serverurl+url);
+  }
+
+  createBlog(url:any,data:any){
+    return this.http.post(environment.serverurl+url,data);
+  }
+
+  getFilteredData(url:any){
+    return this.http.get(environment.serverurl+url);
+  }
+
 }
