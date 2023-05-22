@@ -14,8 +14,9 @@ import { ProfileComponent } from './pages/profile/profile.component';
 import { CreateBookComponent } from './pages/create-book/create-book.component';
 import { ToastrModule } from 'ngx-toastr';
 import { LazyLoadImageModule } from 'ng-lazyload-image';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CartlistComponent } from './pages/cartlist/cartlist.component';
+import { BrowserAnimationsModule  } from '@angular/platform-browser/animations';
+// import { NgxPaginationModule } from 'ngx-pagination';
 
 @NgModule({
   declarations: [
@@ -37,7 +38,8 @@ import { CartlistComponent } from './pages/cartlist/cartlist.component';
     HttpClientModule,
     ToastrModule.forRoot(),
     LazyLoadImageModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    NgxPaginationModule
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -4,6 +4,7 @@ const bcrypt = require('bcrypt');
 const jwt = require("jsonwebtoken");
 const checkAuth = require('./middleware/check-auth');
 const Post = require('../backend/model/post.js');
+const Blog = require("../backend/model/blog.js");
 const mongoType = require('mongoose').Types;
 
 const path = require('path');
@@ -99,7 +100,7 @@ router.get('/profile', checkAuth, (req, res) => {
 })
 
 // Upload Profile Image
-router.post('/upload-photo', upload.single('profilePhoto'), checkAuth, async (req, res) => {
+router.post('/upload-photo', upload.single('profilePhoto'), checkAuth, async (req,res)=>{
     const { originalname, path } = req.file;
 
     const userId = req.userData.userId;
@@ -140,13 +141,50 @@ router.post('/createbook', upload.single('image'), (req, res) => {
     })
 })
 
+//create blog
+router.post('/createblog',(req,res)=>{
+
+    let blog = new Blog({
+        blog_name:req.body.blog_name,
+        blog_related_to:req.body.blog_related_to,
+        blog_content:req.body.blog_content,
+        blog_date:req.body.blog_date
+    })
+
+    blog.save().then((blogs,err)=>{
+        if(blogs){
+            res.send({success:true,message:'blog created successfully', blogs});
+        }else{
+            res.status(400).send({success:false,message:'Internal Error!'});
+        }
+    }).catch(err=>{
+        res.status(400).send({success:false,message:'Internal Error!',err});
+    })
+})
+
 //get all books
-router.get('/getallbooks', (req, res) => {
-    Post.find().then((books, err) => {
-        if (books) {
-            res.send({ success: true, message: 'Books fetch successfully', books });
-        } else {
-            res.status(400).send({ success: false, message: 'Internal Error!' })
+router.get('/getallbooks',(req,res)=>{
+    Post.find().then((books,err)=>{
+        const booklength = books.length;
+        if(books){
+            res.send({success:true,message:'Books fetch successfully',book_length:booklength,books});
+        }else{
+            res.status(400).send({success:false,message:'Internal Error!'})
+        }
+    }).catch(err=>{
+        res.status(400).send({success:false,message:'Internal Error!',err});
+    })
+
+})
+
+//get all blogs
+router.get('/getallblogs',(req,res)=>{
+    Blog.find().then((blogs,err)=>{
+        const bloglength = blogs.length;
+        if(blogs){
+            res.send({success:true,message:'Blog fetch successfully',blog_length:bloglength,blogs});
+        }else{
+            res.status(400).send({success:false,message:'Internal Error!'})
         }
     }).catch(err => {
         res.status(400).send({ success: false, message: 'Internal Error!', err });
@@ -219,8 +257,8 @@ router.get('/search', (req, res) => {
         ]
     };
 
-    Post.find(searchQuery).then((books) => {
-        res.send({ success: true, message: 'Books fetch successfully', books });
+    Post.find(searchQuery).then((books)=> {
+        res.send({success:true,message:'Books fetch successfully',books});
     }).catch((error) => {
         res.status(500).json({ error: 'An error occurred while searching for products', error });
     });
@@ -356,5 +394,28 @@ router.post('/addAddress', async (req,res)=>{
     }
 
 })
+
+// Filter Api
+router.get('/filter', async(req, res) => {
+    var queryHit = req.query;
+
+    if(queryHit.query == "asc"){
+        var filteredBooks = await Post.find().exec();
+        filteredBooks.sort((a,b)=>a.price - b.price);
+        res.json(filteredBooks);
+    }else if(queryHit.query == "desc"){
+        var filteredBooks = await Post.find().exec();
+        filteredBooks.sort((a,b)=>b.price - a.price);
+        res.json(filteredBooks);
+    }else if(queryHit.query == "newness"){
+        var filteredBooks = await Post.find().exec();
+        filteredBooks.sort((a,b)=>{
+            const dateA = new Date(b.publish_date);
+            const dateB = new Date(a.publish_date);
+            return dateB.getTime() - dateA.getTime();
+        });
+        res.json(filteredBooks);
+    }
+});
 
 module.exports = router;
