@@ -9,8 +9,7 @@
 
                 <div>
                     <div class="container d-flex justify-content-center" style="margin-bottom: 15px;">
-                        <!-- <img src="assets/img_avatar.png" alt="Avatar" class="avatar"> -->
-
+                        
                         <img [lazyLoad]="'http://localhost:8080/'+profileData?.profilePhoto?.path" defaultImage="assets\img_avatar.png" alt="Avatar" class="avatar">
 
                         <label for="upload"> <i class="fa fa-camera" aria-hidden="true" style="color: coral; cursor: pointer;" ></i></label>
@@ -33,6 +32,11 @@
                             <td>Mobile</td>
                             <td>{{profileData?.mobile}}</td>
                           </tr>
+
+                          <tr>
+                            <td>Address</td>
+                            <td>{{profileData?.address[0].street}}, {{profileData?.address[0].city}}, {{profileData?.address[0].state}}, {{profileData?.address[0].country}}, {{profileData?.address[0].postalCode}}</td>
+                          </tr>
                         </tbody>
                     </table>
 
@@ -40,13 +44,61 @@
                        <div class="d-grid gap-3 col-6 ">
                            <button class="btn btn-warning btn-block" type="submit" routerLink="/change-password">Change Password</button>
                         </div>
-                        <div class="d-grid gap-3 col-6 mx-auto">
-                            <button class="btn btn-success btn-block" type="submit" routerLink="/createBook">Create Book</button>
-                        </div>
+                       
+                        <div class="d-grid gap-3 col-6 ">
+                            <button class="btn btn-warning btn-block" type="submit" data-bs-toggle="modal" data-bs-target="#exampleModal">Add New Address</button>
+                         </div>
+                   </div> <br>
+                   <div class="row">
+                    <div class="d-grid gap-3 col-6 mx-auto">
+                        <button class="btn btn-success btn-block" type="submit" routerLink="/createBook">Create Book</button>
+                    </div>
                    </div>
                 </div>
             </div>
         </div>
     </div>
+
+    <!-- Add Address Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Add New Address</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <form [formGroup]="addAddress" (ngSubmit)="addressSubmit()">
+                <div class="form-group">
+                  <label for="street">Street</label>
+                  <input  type="text" class="form-control" formControlName="street" id="street" aria-describedby="emailHelp" placeholder="Enter Street">
+                </div>
+                <div class="form-group">
+                  <label for="city">City</label>
+                  <input type="text" class="form-control" formControlName="city" id="city" placeholder="Enter City">
+                </div>
+                <div class="form-group">
+                  <label for="state">State</label>
+                  <input type="text" class="form-control" formControlName="state" id="state" placeholder="Enter State">
+                </div>
+                <div class="form-group">
+                  <label for="country">Country</label>
+                  <input type="text" class="form-control" formControlName="country" id="country" placeholder="Enter Country">
+                </div>
+                <div class="form-group">
+                  <label for="postalCode">Postal Code</label>
+                  <input type="text" class="form-control" formControlName="postalCode" id="postalCode" placeholder="Enter Postal Code">
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                  <button type="submit" class="btn btn-primary">Submit</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
 </div>
 </div>

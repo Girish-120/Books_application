@@ -222,7 +222,7 @@
               <p class="card-text card-content">{{books.book_description}}</p>
               <span>{{books.author_name}}</span>
               <h5>$ {{books.price}}</h5>
-              <a href="#" class="btn btn-primary">ADD TO CART</a>
+              <a class="btn btn-primary" (click)="addToCart(books._id)">ADD TO CART</a>
               <a data-bs-toggle="modal" data-bs-target="#exampleModal" class="btn btn-success" style="margin-left: 41px;padding: 6px 25px;" (click)="editBookById(books)">EDIT</a>
             </div>
           </div>

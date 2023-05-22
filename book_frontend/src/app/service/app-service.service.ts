@@ -48,6 +48,12 @@ export class AppServiceService {
     return this.http.delete(`${environment.serverurl}${url}${id}`);
   }
 
+  deleteCart(url:any){
+    return this.http.delete(environment.serverurl+url);
+  }
+
+
+
 
   bookFetched(data:any){
     this.valueChanged.next(data);

@@ -1,0 +1,76 @@
+#content{
+    background-color: #fff6f6
+}
+
+.content-row{
+    background-color:white;
+    padding-left: 0px;
+    padding-right: 0px;
+}
+
+.content-row table{
+    width: 100%;
+}
+
+.table-row th{
+    padding: 1.6rem 2rem
+}
+
+.content-row tbody tr td{
+    padding: 1.6rem 2rem;
+}
+
+.product-content{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-left: 15px;
+}
+
+.qty{
+    display: flex;
+    justify-content: space-evenly;
+    width: 100px;
+    height: 37px;
+    font-size: 20px;
+}
+.qty input{
+    margin: 0px 3px;
+    width: 60%;
+}
+
+.qty a{
+    cursor: pointer;
+}
+
+.second-row{
+    width: 20%;
+    border: 1px solid black;
+}
+
+.accordion-item{
+    padding: 20px 0px;
+}
+.accordion-header button{
+    font-weight: 700;
+}
+
+.total{
+    font-weight: 700;
+}
+
+.coupon input{
+    width: 50%;
+}
+.coupon button{
+    border: none;
+    background-color: wheat;
+    width: 30%;
+}
+
+.checkout button{
+    border: none;
+    background-color: black;
+    color: white;
+    font-size: 22px;
+}

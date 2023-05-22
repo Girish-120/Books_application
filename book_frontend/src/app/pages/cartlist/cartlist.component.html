@@ -1,0 +1,135 @@
+<div class="container-fluid">
+    <div class="row m-3">
+        <div class="col-md-12 text-center">
+            <h2>Cart List</h2>
+        </div>
+    </div>
+    <hr>
+
+
+    <div class="site-content" id="content">
+        <div class="container">
+            <div class="text-center p-5">
+                <h2>Your cart: {{cartBook.books?.length}} items</h2>
+            </div>
+
+            <div class="row pb-5">
+                <div class="col-md-9 content-row">
+                    <table>
+                        <thead>
+                            <tr class="table-row" style="border: 1px solid #eae8e4;">
+                                <th>Product</th>
+                                <th>Price</th>
+                                <th>Quantity</th>
+                                <th>Total</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="border" *ngFor="let books of cartBook.books; let i=index">
+                                <td class="d-flex">
+                                    <div class="d-flex align-items-center">
+                                        <a><img  [lazyLoad]="'http://localhost:8080/'+books.image?.path" defaultImage="assets\bb-social-share-v1.jpg" alt="" height="130" width="90"></a>
+                                    </div>
+                                    <div class="ml-3 product-content">
+                                        <p>{{books.book_name}}</p>
+                                        <p class="text-secondary">{{books.author_name}}</p>
+                                    </div>
+                                </td>
+                                <td>
+                                    <p>₹ {{books.price}}</p>
+                                </td>
+
+                                <td style="width: 10%;">
+                                    <div class="border qty">
+                                        <a (click)="decrement(books)">-</a>
+                                        <input type="number" step="1" min="1" max="100" value="{{Profile.data.cart[i].quantity}}" class="border-0 text-center">
+                                        <a (click)="increment(books)">+</a>
+                                    </div>
+                                </td>
+
+                                <td>
+                                    <p>₹ {{books.price * Profile.data.cart[i].quantity}}</p>
+                                </td>
+
+                                <td>
+                                  <a style="color: red; cursor: pointer;" (click)="deleteCart(books)"><i class="fa fa-times" aria-hidden="true"></i></a>
+                                </td>
+                            </tr>
+
+                        </tbody>
+                    </table>
+                </div>
+                <div class="col-md-1" style="width: 0%;"></div>
+                <div class="col-md-2 content-row second-row">
+                    <div class="accordion accordion-flush" id="accordionFlushExample">
+                        <div class="accordion-item">
+                          <h2 class="accordion-header" id="flush-headingOne">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
+                              Cart Totals
+                            </button>
+                          </h2>
+                          <div id="flush-collapseOne" class="accordion-collapse collapse" aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
+                            <div class="accordion-body">
+                                <div class="row">
+                                    <div class="col-md-6">Subtotal</div>
+                                    <div class="col-md-6">₹ {{cartBook.totalPrice}}</div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">Shipping</div>
+                                    <div class="col-md-6">Free Shipping</div>
+                                </div>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div class="accordion-item">
+                          <h2 class="accordion-header" id="flush-headingTwo">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseTwo" aria-expanded="false" aria-controls="flush-collapseTwo">
+                              Coupon
+                            </button>
+                          </h2>
+                          <div id="flush-collapseTwo" class="accordion-collapse collapse" aria-labelledby="flush-headingTwo" data-bs-parent="#accordionFlushExample">
+                            <div class="accordion-body">
+                               <div class="d-flex coupon">
+                                <input type="text">
+                                <button>Submit</button>
+                               </div>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div class="accordion-item">
+                            <h2 class="accordion-header" id="flush-headingThree">
+                              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseThree" aria-expanded="false" aria-controls="flush-collapseThree">
+                                Address
+                              </button>
+                            </h2>
+                            <div id="flush-collapseThree" class="accordion-collapse collapse" aria-labelledby="flush-headingThree" data-bs-parent="#accordionFlushExample">
+                              <div class="accordion-body">
+
+                                <p *ngFor="let address of Profile?.data.address">
+                                    <input type="radio" name="options" value="{{address.street}}, {{address.city}}, {{address.state}}, {{address.country}}, {{address.postalCode}}"> &nbsp;
+                                    
+                                    <span>{{address.street}}, {{address.city}}, {{address.state}}, {{address.country}}, {{address.postalCode}}</span>
+                                </p>
+
+                              </div>
+                            </div>
+                          </div>
+                        
+                        <div class="row total" style="padding: 20px;">
+                            <div class="col-md-6">Total</div>
+                            <div class="col-md-6"><p>₹ {{cartBook.totalPrice}}</p></div>
+                        </div>
+                    </div>
+
+                    <div class="row pb-5">
+                        <div class="col-md-12 text-center checkout">
+                            <button>Proceed to Checkout</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

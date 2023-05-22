@@ -22,6 +22,7 @@ export class ListingComponent implements OnInit {
   allBooks:any;
   bookId: any;
   dataSlice: any;
+  profileData:any;
 
   constructor(private service:AppServiceService,private fb:FormBuilder,private toast:ToastrService) { }
 
@@ -31,6 +32,13 @@ export class ListingComponent implements OnInit {
     this.service.getValueChanged().subscribe((res:any)=>{
         this.allBooks = res?.books    
     })
+
+      this.service.getprofile("/profile").subscribe((data:any)=>{
+        if(data.success == true){
+          this.profileData = data.data
+        }
+      });
+    
   }
 
   openDiv(event:any){
@@ -112,6 +120,17 @@ export class ListingComponent implements OnInit {
     }else{
       this.getAllBooks();
     }
+  }
+
+
+  addToCart(id:any){
+    this.service.books('/add-to-cart/',{userId:this.profileData._id,productId:id}).subscribe((data:any)=>{
+      if(data.success == true){
+        this.toast.success("Success message",data.message);
+      }else{
+        this.toast.error('Error message',data.message);
+      }
+    })
   }
 
 }

@@ -20,7 +20,9 @@
             <input class="form-control me-2" type="search" [(ngModel)]="query" name="search" placeholder="Search" aria-label="Search">
             <button class="btn btn-success" type="submit" (click)="search()">Search</button>
           </form> &nbsp;&nbsp;&nbsp;
-          <button class="btn btn-danger" type="submit" (click)="signOut()">Logout</button>
+          <button class="btn btn-danger" type="submit" (click)="signOut()">Logout</button> &nbsp;&nbsp;&nbsp;
+       
+          <span style="color: whitesmoke; font-size: 20px; cursor: pointer;" routerLink="/cart-list"> <i class="fa fa-shopping-cart" aria-hidden="true"></i> Cart</span>
         </div>
       </div>
   </nav>
