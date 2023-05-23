@@ -36,6 +36,17 @@
     border-radius: 5px;
   }
 
+  ::ng-deep .owl-carousel .owl-nav .owl-prev i{
+    position: absolute !important;
+    left: -1320px !important;
+    top: 345px !important;
+  }
+
+  ::ng-deep .owl-carousel .owl-nav .owl-next i{
+    position: absolute !important;
+    top: 346px !important;
+  }
+
   .newsletter input{
     width: 40vw;
     height: 60px;

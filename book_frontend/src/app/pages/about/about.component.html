@@ -5,7 +5,7 @@
         </div>
     </div>
     <hr>
-    
+
     <div class="row">
         <div class="col-md-12 aboutImg">
             <img src="https://demo2.madrasthemes.com/bookworm-html/redesigned-octo-fiesta/assets/img/1920x650/img1.jpg">
@@ -146,26 +146,40 @@
         <div class="mb-5 mb-lg-10">
             <div class="row mb-3">
                 <div class="col-md-5">
-                    <hr style="position: absolute;width: 42%;left: 0;">
+                    <hr>
                 </div>
                 <div class="col-md-2 text-center">
                     <h3>Blogs</h3>
                 </div>
                 <div class="col-md-5">
-                    <hr style="width: 125%;">
+                    <hr>
                 </div>
             </div>
-      
-            <div class="owl-carousel" style="width: 64%;display: flex;">
-                <div class="slider-item" *ngFor="let blogs of allBlogs">
-                  <h5 class="card-title book-name">{{blogs.blog_related_to}}</h5>
-                  <p class="card-text card-content">{{blogs.blog_content}}</p>
-                  <span>{{blogs.blog_name}}</span>
+
+            <div class="row">
+                <div class="owl-carousel" style="width: 100%;display: flex;">
+                    <div class="slider-item" *ngFor="let blogs of allBlogs">
+                        <div class="card" style="width: 18rem;">
+                            <div class="text-center">
+                                <img [lazyLoad]="'http://localhost:8080/'+blogs.image?.path" defaultImage="assets\bb-social-share-v1.jpg" alt="Uploaded Image" class="card-img-top" style="height: 230px;">
+                            </div>
+                            <div class="card-body">
+                              <h5 class="card-title">{{blogs.blog_name}}</h5>
+                              <p class="card-text">{{blogs.blog_content}}</p>
+                              <span class="btn btn-primary">{{blogs.blog_related_to}}</span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <button style="margin-left: 500px;" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#exampleModal">Create blog</button>
         </div>
-      </div>
+        <div class="row mb-5">
+            <div class="col-md-12 text-center">
+                <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#exampleModal">Create
+                    blog</button>
+            </div>
+        </div>
+    </div>
 
     <div class="container">
         <div class="mb-5 mb-lg-10">
@@ -193,37 +207,47 @@
     </div>
 </div>
 
+<!-- Create Blog -->
 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Create blog</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Create Blog</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form [formGroup]="blogForm" (ngSubmit)="createNewBlog()">
+                    <div class="form-group">
+                        <label for="exampleInputEmail1">Blog name</label>
+                        <input formControlName="blog_name" type="text" class="form-control" id="exampleInputEmail1"
+                            aria-describedby="emailHelp" placeholder="Enter blog name">
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleInputPassword1">Blog content</label>
+                        <input formControlName="blog_content" type="text" class="form-control"
+                            id="exampleInputPassword1" placeholder="Enter blog content">
+                    </div>
+                    <div class="form-group">
+                        <label for="authorname">Blog related to</label>
+                        <input formControlName="blog_related_to" type="text" class="form-control" id="authorname"
+                            placeholder="Blog related to">
+                    </div>
+                    <div class="form-group">
+                        <label for="publishdate">Blog date</label>
+                        <input formControlName="blog_date" type="date" class="form-control" id="publishdate"
+                            placeholder="Blog date">
+                    </div>
+                    <div class="form-group">
+                        <label for="publishdate">Blog Image</label>
+                        <input type="file" class="form-control" id="image" name="image" (change)="onSelectFile($event)"
+                            required>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </div>
+                </form>
+            </div>
         </div>
-        <div class="modal-body">
-          <form [formGroup]="blogForm" (ngSubmit)="createNewBlog()">
-            <div class="form-group">
-              <label for="exampleInputEmail1">blog name</label>
-              <input formControlName="blog_name" type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter book name">
-            </div>
-            <div class="form-group">
-              <label for="exampleInputPassword1">blog content</label>
-              <input formControlName="blog_content" type="text" class="form-control" id="exampleInputPassword1" placeholder="Enter book description">
-            </div>
-            <div class="form-group">
-              <label for="authorname">blog related to</label>
-              <input formControlName="blog_related_to" type="text" class="form-control" id="authorname" placeholder="Enter Author name">
-            </div>
-            <div class="form-group">
-              <label for="publishdate">blog date</label>
-              <input formControlName="blog_date" type="date" class="form-control" id="publishdate" placeholder="Enter publish date">
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-              <button type="submit" class="btn btn-primary">Submit</button>
-            </div>
-          </form>
-        </div>
-      </div>
     </div>
-  </div>
+</div>

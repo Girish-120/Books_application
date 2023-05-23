@@ -272,22 +272,25 @@
     </div>
   </div>
 </div>
-<div class="container">
+<div class="container-fluid mt-5">
   <div class="mb-5 mb-lg-10">
       <div class="row mb-3">
           <div class="col-md-5">
-              <hr style="position: absolute;width: 42%;left: 0;">
+              <hr>
           </div>
           <div class="col-md-2 text-center">
               <h3>Latest Book</h3>
           </div>
           <div class="col-md-5">
-              <hr style="width: 125%;">
+              <hr>
           </div>
       </div>
 
       <div class="owl-carousel">
-          <div class="slider-item" *ngFor="let books of allBooks"><img [lazyLoad]="'http://localhost:8080/'+books.image?.path" defaultImage="assets\bb-social-share-v1.jpg" alt="Uploaded Image" class="card-img-top" style="width: 200px; height: 230px;margin-left: 32px;">
+          <div class="slider-item" *ngFor="let books of allBooks">
+            <div class="text-center">
+              <img [lazyLoad]="'http://localhost:8080/'+books.image?.path" defaultImage="assets\bb-social-share-v1.jpg" alt="Uploaded Image" class="card-img-top" style="width: 200px; height: 230px;margin-left: 80px;">
+            </div>
             <h5 class="card-title book-name">{{books.book_name}}</h5>
             <p class="card-text card-content">{{books.book_description}}</p>
             <span>{{books.author_name}}</span>

@@ -106,6 +106,9 @@
 
 .owl-carousel {
     margin-bottom: 20px;
+
+    margin: 0px 26px;
+    width: 96%;
   }
   
   .owl-carousel .slider-item {

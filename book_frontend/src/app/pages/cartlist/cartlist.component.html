@@ -10,7 +10,10 @@
     <div class="site-content" id="content">
         <div class="container">
             <div class="text-center p-5">
-                <h2>Your cart: {{cartBook.books?.length}} items</h2>
+                <!-- <h2>Your cart:{{cartBook.books?.length}}  items</h2> -->
+                <h2>Your cart: {{cartBook.books ? cartBook.books?.length : 0}}  items</h2>
+
+                <!-- cartBook.totalPrice ? cartBook.totalPrice : 0 -->
             </div>
 
             <div class="row pb-5">
@@ -42,13 +45,13 @@
                                 <td style="width: 10%;">
                                     <div class="border qty">
                                         <a (click)="decrement(books)">-</a>
-                                        <input type="number" step="1" min="1" max="100" value="{{Profile.data.cart[i].quantity}}" class="border-0 text-center">
-                                        <a (click)="increment(books)">+</a>
+                                        <input type="number" step="1" min="1" max="100" value="{{quantity[i]}}" class="border-0 text-center">
+                                        <a (click)="increment(books._id)">+</a>
                                     </div>
                                 </td>
 
                                 <td>
-                                    <p>₹ {{books.price * Profile.data.cart[i].quantity}}</p>
+                                    <p>₹ {{books.price * quantity[i]}}</p>
                                 </td>
 
                                 <td>
@@ -72,7 +75,7 @@
                             <div class="accordion-body">
                                 <div class="row">
                                     <div class="col-md-6">Subtotal</div>
-                                    <div class="col-md-6">₹ {{cartBook.totalPrice}}</div>
+                                    <div class="col-md-6">₹ {{cartBook.totalPrice ? cartBook.totalPrice : 0}}</div>
                                 </div>
                                 <div class="row">
                                     <div class="col-md-6">Shipping</div>
@@ -119,7 +122,7 @@
                         
                         <div class="row total" style="padding: 20px;">
                             <div class="col-md-6">Total</div>
-                            <div class="col-md-6"><p>₹ {{cartBook.totalPrice}}</p></div>
+                            <div class="col-md-6"><p>₹ {{cartBook.totalPrice ? cartBook.totalPrice : 0}}</p></div>
                         </div>
                     </div>
 
