@@ -10,6 +10,7 @@ import { Observable, BehaviorSubject } from "rxjs";
 export class AppServiceService {
 
   private valueChanged = new BehaviorSubject<any>(null);
+  private valueChanged1 = new BehaviorSubject<any>(null);
 
   constructor(private http:HttpClient) { }
 
@@ -72,6 +73,13 @@ export class AppServiceService {
 
   getFilteredData(url:any){
     return this.http.get(environment.serverurl+url);
+  }
+
+  cartFetched(data:any){
+    this.valueChanged1.next(data);
+  }
+  cartChanged():Observable<any>{
+    return this.valueChanged1.asObservable();
   }
 
 }

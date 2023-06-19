@@ -7,6 +7,7 @@ import { ProfileComponent } from './pages/profile/profile.component';
 import { CreateBookComponent } from './pages/create-book/create-book.component';
 import { AuthguardGuard } from './authguard.guard';
 import { CartlistComponent } from './pages/cartlist/cartlist.component';
+import { GetOrdersComponent } from './pages/get-orders/get-orders.component';
 
 const routes: Routes = [
   {path:'', component:RegistrationComponent},
@@ -14,7 +15,8 @@ const routes: Routes = [
   {path:'listing',component:ListingComponent,canActivate:[AuthguardGuard]},
   {path:'profile',component:ProfileComponent,canActivate:[AuthguardGuard]},
   {path:'createBook',component:CreateBookComponent,canActivate:[AuthguardGuard]},
-  {path:'cart-list',component:CartlistComponent, canActivate:[AuthguardGuard]}
+  {path:'cart-list',component:CartlistComponent, canActivate:[AuthguardGuard]},
+  {path:'get-orders',component:GetOrdersComponent, canActivate:[AuthguardGuard]}
 ];
 
 @NgModule({

@@ -32,17 +32,21 @@ export class ListingComponent implements OnInit {
 
   ngOnInit(): void {
     this.getAllBooks();
-
     this.service.getValueChanged().subscribe((res:any)=>{
-        this.allBooks = res?.books    
+      if(res != null){
+        this.allBooks = res?.books  
+      }  
     })
+    this.getProfile();
+  }
 
-      this.service.getprofile("/profile").subscribe((data:any)=>{
-        if(data.success == true){
-          this.profileData = data.data
-        }
-      });
-    
+  getProfile(){
+    this.service.getprofile("/profile").subscribe((data:any)=>{
+      if(data.success == true){
+        this.profileData = data.data
+        this.service.cartFetched(this.profileData.cart.length)
+      }
+    });
   }
 
   openDiv(event:any){
@@ -127,10 +131,21 @@ export class ListingComponent implements OnInit {
     this.service.books('/add-to-cart/',{userId:this.profileData._id,productId:id}).subscribe((data:any)=>{
       if(data.success == true){
         this.toast.success("Success message",data.message);
+        this.getProfile();
       }else{
         this.toast.error('Error message',data.message);
       }
     })
+  }
+
+  getStarArray(quantity:any): number[] {
+    const filledStars = quantity !== undefined ? quantity : 0;
+    return Array(filledStars).fill(0);
+  }
+
+  getEmptyStarArray(quantity:any): number[] {
+    const emptyStars = quantity !== undefined ? (5 -quantity) : 5;
+    return Array(emptyStars).fill(0);
   }
 
 }

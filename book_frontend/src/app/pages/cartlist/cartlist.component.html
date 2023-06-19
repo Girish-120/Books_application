@@ -1,138 +1,446 @@
 <div class="container-fluid">
-    <div class="row m-3">
-        <div class="col-md-12 text-center">
-            <h2>Cart List</h2>
-        </div>
+  <div class="row m-3">
+    <div class="col-md-12 text-center">
+      <h2 *ngIf="cartPage">Cart List</h2>
+      <h2 *ngIf="orderPage">Order Placed</h2>
     </div>
-    <hr>
+  </div>
+  <hr>
+
+  <!-- <div class="slider">
+    <p class="item-1">This is your last chance</p>
+
+    <p class="item-2">You take the blue pill - </p>
+
+    <p class="item-3">You take the red pill </p>
+  </div> -->
+
+  <div class="top-bar">
+    <!-- <div class="slide-text">This is a sliding text in the top bar.</div> -->
+    <!-- <p class="item-1 slide-text">Use promo code: ABC to get 5% discount</p>
+    <p class="item-2 slide-text">Use promo code: sdf to get 15% discount </p>
+    <p class="item-3 slide-text">Use promo code: SDE to get 25% discount</p> -->
+
+    <ng-container *ngFor="let item of allCoupons; let i = index">
+      <p class="item-{{i+1}} slide-text">
+        Use promo code: {{ item.code }} to get {{ item.discount }}% discount
+      </p>
+    </ng-container>
+
+  </div>
 
 
-    <div class="site-content" id="content">
-        <div class="container">
-            <div class="text-center p-5">
-                <!-- <h2>Your cart:{{cartBook.books?.length}}  items</h2> -->
-                <h2>Your cart: {{cartBook.books ? cartBook.books?.length : 0}}  items</h2>
+  <div class="site-content" id="content">
+    <div class="container" *ngIf="cartPage">
+      <div class="text-center p-5">
+        <!-- <h2>Your cart:{{cartBook.books?.length}}  items</h2> -->
+        <h2>Your cart: {{cartBook.books ? cartBook.books?.length : 0}} items</h2>
 
-                <!-- cartBook.totalPrice ? cartBook.totalPrice : 0 -->
+        <!-- cartBook.totalPrice ? cartBook.totalPrice : 0 -->
+      </div>
+
+      <div class="row pb-5">
+        <div class="col-md-9 content-row">
+          <table>
+            <thead>
+              <tr class="table-row" style="border: 1px solid #eae8e4;">
+                <th>Product</th>
+                <th>Price</th>
+                <th>Quantity</th>
+                <th>Total</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="border" *ngFor="let books of cartBook.books; let i=index">
+                <td class="d-flex">
+                  <div class="d-flex align-items-center">
+                    <a><img [lazyLoad]="'http://localhost:8080/'+books.image?.path"
+                        defaultImage="assets\bb-social-share-v1.jpg" alt="" height="130" width="90"></a>
+                  </div>
+                  <div class="ml-3 product-content">
+                    <p>{{books.book_name}}</p>
+                    <p class="text-secondary">{{books.author_name}}</p>
+                  </div>
+                </td>
+                <td>
+                  <p>&#8377; {{books.price}}</p>
+                </td>
+
+                <td style="width: 10%;">
+                  <div class="border qty">
+                    <a (click)="decrement(books)">-</a>
+                    <input type="number" step="1" min="1" max="100" value="{{quantity[i]}}"
+                      class="border-0 text-center">
+                    <a (click)="increment(books._id)">+</a>
+                  </div>
+                </td>
+
+                <td>
+                  <p>&#8377; {{books.price * quantity[i]}}</p>
+                </td>
+
+                <td>
+                  <a style="color: red; cursor: pointer;" (click)="deleteCart(books)"><i class="fa fa-times"
+                      aria-hidden="true"></i></a>
+                </td>
+              </tr>
+
+            </tbody>
+          </table>
+        </div>
+        <div class="col-md-1" style="width: 0%;"></div>
+        <div class="col-md-2 content-row second-row">
+          <div class="accordion accordion-flush" id="accordionFlushExample">
+            <div class="accordion-item">
+              <h2 class="accordion-header" id="flush-headingOne">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                  data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
+                  Cart Totals
+                </button>
+              </h2>
+              <div id="flush-collapseOne" class="accordion-collapse collapse" aria-labelledby="flush-headingOne"
+                data-bs-parent="#accordionFlushExample">
+                <div class="accordion-body">
+                  <div class="row">
+                    <div class="col-md-6">Subtotal</div>
+                    <div class="col-md-6">&#8377; {{cartTotal ? cartTotal : 0}}</div>
+                  </div>
+                  <div class="row">
+                    <div class="col-md-6">Shipping</div>
+                    <div class="col-md-6">Free Shipping</div>
+                  </div>
+                </div>
+              </div>
             </div>
 
-            <div class="row pb-5">
-                <div class="col-md-9 content-row">
-                    <table>
-                        <thead>
-                            <tr class="table-row" style="border: 1px solid #eae8e4;">
-                                <th>Product</th>
-                                <th>Price</th>
-                                <th>Quantity</th>
-                                <th>Total</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr class="border" *ngFor="let books of cartBook.books; let i=index">
-                                <td class="d-flex">
-                                    <div class="d-flex align-items-center">
-                                        <a><img  [lazyLoad]="'http://localhost:8080/'+books.image?.path" defaultImage="assets\bb-social-share-v1.jpg" alt="" height="130" width="90"></a>
-                                    </div>
-                                    <div class="ml-3 product-content">
-                                        <p>{{books.book_name}}</p>
-                                        <p class="text-secondary">{{books.author_name}}</p>
-                                    </div>
-                                </td>
-                                <td>
-                                    <p>₹ {{books.price}}</p>
-                                </td>
-
-                                <td style="width: 10%;">
-                                    <div class="border qty">
-                                        <a (click)="decrement(books)">-</a>
-                                        <input type="number" step="1" min="1" max="100" value="{{quantity[i]}}" class="border-0 text-center">
-                                        <a (click)="increment(books._id)">+</a>
-                                    </div>
-                                </td>
-
-                                <td>
-                                    <p>₹ {{books.price * quantity[i]}}</p>
-                                </td>
-
-                                <td>
-                                  <a style="color: red; cursor: pointer;" (click)="deleteCart(books)"><i class="fa fa-times" aria-hidden="true"></i></a>
-                                </td>
-                            </tr>
-
-                        </tbody>
-                    </table>
+            <div class="accordion-item">
+              <h2 class="accordion-header" id="flush-headingTwo">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                  data-bs-target="#flush-collapseTwo" aria-expanded="false" aria-controls="flush-collapseTwo">
+                  Coupon
+                </button>
+              </h2>
+              <div id="flush-collapseTwo" class="accordion-collapse collapse" aria-labelledby="flush-headingTwo"
+                data-bs-parent="#accordionFlushExample">
+                <div class="accordion-body">
+                  <div class="d-flex coupon">
+                    <input type="text" [(ngModel)]="couponData"> &nbsp;
+                    <button type="submit" (click)="couponSubmit()">Submit</button>
+                  </div>
                 </div>
-                <div class="col-md-1" style="width: 0%;"></div>
-                <div class="col-md-2 content-row second-row">
-                    <div class="accordion accordion-flush" id="accordionFlushExample">
-                        <div class="accordion-item">
-                          <h2 class="accordion-header" id="flush-headingOne">
-                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
-                              Cart Totals
-                            </button>
-                          </h2>
-                          <div id="flush-collapseOne" class="accordion-collapse collapse" aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
-                            <div class="accordion-body">
-                                <div class="row">
-                                    <div class="col-md-6">Subtotal</div>
-                                    <div class="col-md-6">₹ {{cartBook.totalPrice ? cartBook.totalPrice : 0}}</div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-6">Shipping</div>
-                                    <div class="col-md-6">Free Shipping</div>
-                                </div>
-                            </div>
-                          </div>
-                        </div>
-
-                        <div class="accordion-item">
-                          <h2 class="accordion-header" id="flush-headingTwo">
-                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseTwo" aria-expanded="false" aria-controls="flush-collapseTwo">
-                              Coupon
-                            </button>
-                          </h2>
-                          <div id="flush-collapseTwo" class="accordion-collapse collapse" aria-labelledby="flush-headingTwo" data-bs-parent="#accordionFlushExample">
-                            <div class="accordion-body">
-                               <div class="d-flex coupon">
-                                <input type="text">
-                                <button>Submit</button>
-                               </div>
-                            </div>
-                          </div>
-                        </div>
-
-                        <div class="accordion-item">
-                            <h2 class="accordion-header" id="flush-headingThree">
-                              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseThree" aria-expanded="false" aria-controls="flush-collapseThree">
-                                Address
-                              </button>
-                            </h2>
-                            <div id="flush-collapseThree" class="accordion-collapse collapse" aria-labelledby="flush-headingThree" data-bs-parent="#accordionFlushExample">
-                              <div class="accordion-body">
-
-                                <p *ngFor="let address of Profile?.data.address">
-                                    <input type="radio" name="options" value="{{address.street}}, {{address.city}}, {{address.state}}, {{address.country}}, {{address.postalCode}}"> &nbsp;
-                                    
-                                    <span>{{address.street}}, {{address.city}}, {{address.state}}, {{address.country}}, {{address.postalCode}}</span>
-                                </p>
-
-                              </div>
-                            </div>
-                          </div>
-                        
-                        <div class="row total" style="padding: 20px;">
-                            <div class="col-md-6">Total</div>
-                            <div class="col-md-6"><p>₹ {{cartBook.totalPrice ? cartBook.totalPrice : 0}}</p></div>
-                        </div>
-                    </div>
-
-                    <div class="row pb-5">
-                        <div class="col-md-12 text-center checkout">
-                            <button>Proceed to Checkout</button>
-                        </div>
-                    </div>
-                </div>
+              </div>
             </div>
+
+            <div class="accordion-item">
+              <h2 class="accordion-header" id="flush-headingThree">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                  data-bs-target="#flush-collapseThree" aria-expanded="false" aria-controls="flush-collapseThree">
+                  Address
+                </button>
+              </h2>
+              <div id="flush-collapseThree" class="accordion-collapse collapse" aria-labelledby="flush-headingThree"
+                data-bs-parent="#accordionFlushExample">
+                <div class="accordion-body">
+
+                  <p *ngFor="let address of Profile?.data.address">
+                    <input type="radio" name="options"
+                      value="{{address.street}}, {{address.city}}, {{address.state}}, {{address.country}}, {{address.postalCode}}"
+                      (change)="addressChng($event)"> &nbsp;
+
+                    <span>{{address.street}}, {{address.city}}, {{address.state}}, {{address.country}},
+                      {{address.postalCode}}</span>
+                  </p>
+
+                </div>
+              </div>
+            </div>
+
+            <div class="accordion-item">
+              <h2 class="accordion-header" id="flush-headingFour">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                  data-bs-target="#innerAccordion" aria-expanded="false" aria-controls="innerAccordion">
+                  Payment
+                </button>
+              </h2>
+
+              <div id="innerAccordion" class="accordion-collapse collapse">
+                <div class="accordion-body" style="padding: 10px 12px !important;">
+                  <div class="accordion" id="innerAccordion">
+                    <div class="accordion-item">
+                      <h2 class="accordion-header" id="innerHeadingOne">
+                        <input data-bs-toggle="collapse" data-bs-target="#innerCollapseOne" aria-expanded="false"
+                          aria-controls="innerCollapseOne" type="radio" id="customRadio1" name="customRadio"
+                          class="custom-control-input" (click)="paymentRadio('card')" />
+                        <label class="custom-control-label" for="customRadio1"
+                          style="font-size: 18px;margin-left: 15px;">Debit/Credit Card</label>
+                      </h2>
+                      <div id="innerCollapseOne" class="accordion-collapse collapse" aria-labelledby="innerHeadingOne"
+                        data-bs-parent="#innerAccordion">
+                        <div class="accordion-body">
+                          <form [formGroup]="cardForm">
+                            <input type="text" name="cardnum" id="cardnum" formControlName="cardNumber" placeholder="Card Number"
+                              style="border: none;border-bottom: 1px solid grey;"> <br><br>
+
+                            <span>valid thru</span> <br>
+                            <select name="month" id="month" (change)="monthData($event)" style="border: none;border-bottom: 1px solid grey; margin-right: 25px;">
+                              <option disabled selected>MM</option>
+                              <option value="01">January</option>
+                              <option value="02">February</option>
+                              <option value="03">March</option>
+                              <option value="04">April</option>
+                              <option value="05">May</option>
+                              <option value="06">June</option>
+                              <option value="07">July</option>
+                              <option value="08">August</option>
+                              <option value="09">September</option>
+                              <option value="10">October</option>
+                              <option value="11">November</option>
+                              <option value="12">December</option>
+                            </select>
+
+                            <select name="year" id="year" (change)="yearData($event)" style="border: none;border-bottom: 1px solid grey;">
+                              <option disabled selected>YYYY</option>
+                              <option value="2023">2023</option>
+                              <option value="2024">2024</option>
+                              <option value="2025">2025</option>
+                              <option value="2026">2026</option>
+                              <option value="2027">2027</option>
+                              <option value="2028">2028</option>
+                              <option value="2029">2029</option>
+                            </select> <br><br>
+
+                            <input type="text" name="cvv" id="cvv" placeholder="CVV" formControlName="cvc"
+                              style="border: none;border-bottom: 1px solid grey;"> <br><br>
+                          </form>
+
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="accordion-item">
+                      <h2 class="accordion-header" id="innerHeadingTwo">
+                        <input data-bs-toggle="collapse" data-bs-target="#innerCollapseTwo" aria-expanded="false"
+                          aria-controls="innerCollapseTwo" type="radio" id="customRadio1" name="customRadio"
+                          class="custom-control-input" (click)="paymentRadio('cod')" />
+                        <label class="custom-control-label" for="customRadio1"
+                          style="font-size: 18px;margin-left: 15px;">COD</label>
+                      </h2>
+
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+
+            <div class="row total" style="padding: 20px;">
+              <div class="col-md-6">Total</div>
+              <div class="col-md-6">
+                <p>&#8377; {{cartTotal ? cartTotal : 0}}</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="row pb-5">
+            <div class="col-md-12 text-center checkout">
+              <button data-bs-toggle="modal" data-bs-target="#captcha" (click)="generateCaptcha()" *ngIf="codBtn">Proceed to
+                Checkout</button>
+              <button (click)="confirmOrder()" *ngIf="cardBtn">Proceed to
+                Checkout</button>
+            </div>
+          </div>
         </div>
+      </div>
     </div>
+
+    <div class="container" *ngIf="orderPage">
+      <div class="pb-5">
+        <div class="row justify-content-center">
+          <div class="col-md-8">
+
+            <div class="bg-white mt-5 border" *ngIf="orderDetails">
+              <h5 class="text-center mb-5 pt-2 pb-xl-1"><b>Thank you. Your order has been received.</b></h5>
+
+              <div class="border-bottom mb-5 pb-5">
+                <div class="pl-3">
+                  <table class="table table-borderless mb-0 ml-1">
+                    <thead>
+                      <tr>
+                        <th scope="col" class="py-0">Order number:</th>
+                        <th scope="col" class="py-0">Date:</th>
+                        <th scope="col" class="py-0 text-md-center">Total: </th>
+                        <th scope="col" class="py-0 text-md-right pr-md-9">Payment method:</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <th scope="row" class="pr-0 py-0"> #{{orderDetails.orderNumber}}</th>
+                        <td class="pr-0 py-0">{{orderDetails.createdAt}}</td>
+                        <td class="pr-0 py-0 text-md-center"> &#8377;{{orderDetails.totalPrice}}</td>
+                        <td class="pr-md-4 py-0 text-md-right">{{paymentMethod}}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+
+              <div class="border-bottom mb-5 pb-6">
+                <div class="px-3 px-md-4">
+                  <div class="ml-md-2">
+                    <h6 class="mb-4 pb-1"><b>Order Details</b></h6>
+
+                    <div class="d-flex justify-content-between mb-4" *ngFor="let item of orderDetails.books">
+                      <div class="row" style="width: 100%;">
+                        <div class="col-md-5">
+                          <h6 class="mb-1">{{item.book_name}}</h6>
+                          <span class="text-gray-600">({{item.author_name}})</span>
+                        </div>
+                        <div class="col-md-2">
+                          <span class=" ml-4 ml-md-8">x{{item.quantity}}</span>
+                        </div>
+                        <div class="col-md-5 text-end">
+                          <span>&#8377;{{item.price}}</span>
+                        </div>
+                      </div>
+                    </div>
+
+                  </div>
+                </div>
+              </div>
+
+              <div class="border-bottom mb-5 pb-5">
+                <div class="px-3 px-md-4">
+                  <div class="ml-md-2">
+
+                    <div class="d-flex justify-content-between mb-4">
+                      <div class="row" style="width: 100%;">
+                        <div class="col-md-6">
+                          <span><b>Subtotal :</b></span>
+                        </div>
+                        <div class="col-md-6 text-end">
+                          <span>&#8377;{{orderDetails.subTotal}}</span>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="d-flex justify-content-between mb-4">
+                      <div class="row" style="width: 100%;">
+                        <div class="col-md-6">
+                          <span><b>Coupon Discount :</b></span>
+                        </div>
+                        <div class="col-md-6 text-end">
+                          <span>{{orderDetails.coupon ? orderDetails.coupon : 0}}%</span>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="d-flex justify-content-between mb-4">
+                      <div class="row" style="width: 100%;">
+                        <div class="col-md-6">
+                          <span><b>Shipping :</b></span>
+                        </div>
+                        <div class="col-md-6 text-end">
+                          <span>Free Shipping</span>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="d-flex justify-content-between mb-4">
+                      <div class="row" style="width: 100%;">
+                        <div class="col-md-6">
+                          <span><b>Payment Method :</b></span>
+                        </div>
+                        <div class="col-md-6 text-end">
+                          <span>{{paymentMethod}}</span>
+                        </div>
+                      </div>
+                    </div>
+
+                  </div>
+                </div>
+              </div>
+
+              <div class="border-bottom mb-5 pb-4">
+                <div class="px-3 px-md-4">
+                  <div class="ml-md-2">
+                    <div class="d-flex justify-content-between mb-4">
+                      <div class="row" style="width: 100%;">
+                        <div class="col-md-6">
+                          <span><b>Total</b></span>
+                        </div>
+                        <div class="col-md-6 text-end">
+                          <span>&#8377;{{orderDetails.totalPrice}}</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+
+              <div class="px-3 px-md-4">
+                <div class="ml-md-2">
+
+                  <div class="d-flex justify-content-between mb-4">
+                    <div class="row" style="width: 100%;">
+                      <div class="col-md-6">
+                        <div class="mb-6 mb-md-0">
+                          <h6 class="mb-3">Billing Address
+                          </h6>
+                          <address class="d-flex flex-column mb-0">
+                            <span>{{orderDetails.address}}</span>
+                            <!-- <span>Ali Tufan</span>
+                            <span>Bedford St,</span>
+                            <span>Covent Garden, </span>
+                            <span>London WC2E 9ED</span>
+                            <span>United Kingdom</span> -->
+                          </address>
+                        </div>
+                      </div>
+
+                      <div class="col-md-6">
+                        <h6 class="mb-3">Shipping Address
+                        </h6>
+                        <address class="d-flex flex-column mb-0">
+                          <span>{{orderDetails.address}}</span>
+                          <!-- <span>Ali Tufan</span>
+                          <span>Bedford St,</span>
+                          <span>Covent Garden, </span>
+                          <span>London WC2E 9ED</span>
+                          <span>United Kingdom</span> -->
+                        </address>
+                      </div>
+
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Captcha Modal -->
+  <div class="modal fade" id="captcha" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Captcha</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div id="svgContainer" class="text-center"></div> <br>
+          <div class="text-center">
+            <form [formGroup]="orderForm" (ngSubmit)="placeOrder()">
+              <input type="text" name="captcha" id="captcha" formControlName="captchaTxt"> <br><br>
+
+              <button type="submit">Place Order</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>

@@ -16,7 +16,8 @@ import { ToastrModule } from 'ngx-toastr';
 import { LazyLoadImageModule } from 'ng-lazyload-image';
 import { CartlistComponent } from './pages/cartlist/cartlist.component';
 import { BrowserAnimationsModule  } from '@angular/platform-browser/animations';
-// import { NgxPaginationModule } from 'ngx-pagination';
+import { NgxPaginationModule } from 'ngx-pagination';
+import { GetOrdersComponent } from './pages/get-orders/get-orders.component';
 
 @NgModule({
   declarations: [
@@ -28,7 +29,8 @@ import { BrowserAnimationsModule  } from '@angular/platform-browser/animations';
     ListingComponent,
     ProfileComponent,
     CreateBookComponent,
-    CartlistComponent
+    CartlistComponent,
+    GetOrdersComponent
   ],
   imports: [
     BrowserModule,

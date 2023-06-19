@@ -1,0 +1,139 @@
+<div class="container-fluid">
+    <div class="row m-3">
+        <div class="col-md-12 text-center">
+            <h2>Orders Page</h2>
+        </div>
+    </div>
+    <hr>
+
+
+</div>
+
+<div class="site-content" id="content">
+    <div class="container page" *ngIf="orderPage">
+        <div class="row">
+            <div class="col-md-9 content-row mx-auto">
+                <table>
+                    <thead>
+                        <tr class="table-row" style="border: 1px solid #eae8e4;">
+                            <th>Order No.</th>
+                            <th>Items Qty</th>
+                            <th>Date</th>
+                            <th>Status</th>
+                            <th>Total</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="border" *ngFor="let item of orderDetails">
+                            <td class="d-flex">
+                                <span>#{{item.orderNumber}}</span>
+                            </td>
+                            <td>
+                                <span>x {{item.products.length}}</span>
+                            </td>
+
+                            <td>
+                                <span>{{item.date}}</span>
+                            </td>
+
+                            <td>
+                                <span>Pending</span>
+                            </td>
+
+                            <td>
+                                <span>₹ {{item.totalPrice}}</span>
+                            </td>
+
+                            <td>
+                                <button class="btn btn-outline-success" (click)="viewOrderPage(item)">View</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="container-fluid page" *ngIf="viewOrder">
+        <div class="row">
+            <div class="col-md-9 mx-auto">
+                <p><b>Order: #{{showOrder.orderNumber}}</b></p>
+                <div style="display: flex; justify-content: space-between;">
+                    <h3><b>{{showOrder.date}}</b></h3>
+                    <p><b>{{showOrder.products.length}} item -- Rs. {{showOrder.totalPrice}}</b></p>
+                </div>
+            </div>
+        </div>
+        <hr>
+
+        <div class="row">
+            <div class="col-md-9 mx-auto" style="display: flex; justify-content: space-between; align-items: center;" *ngFor="let item of showOrder.products">
+                <img [lazyLoad]="'http://localhost:8080/'+item.image?.path"
+                        defaultImage="assets\bb-social-share-v1.jpg" alt="" width="10%" height="70%">
+                <div>
+                    <h3>{{item.book_name}}</h3>
+                    <p>Quantity: {{item.quantity}}</p>
+                </div>
+                <div>
+                    <span><b>Rs. {{item.price * item.quantity}}</b></span>
+                    <p>
+                          <ng-container *ngFor="let star of getStarArray(item?.ratings[item?.ratings?.length - 1]?.ratingValue); let i=index">
+                            <i class="fa fa-star filled" aria-hidden="true" (click)="selectStar(i + 1, item)"></i>
+                          </ng-container>
+                          
+                          <ng-container *ngFor="let star of getEmptyStarArray(item?.ratings[item?.ratings?.length - 1]?.ratingValue); let i =index">
+                            <i class="fa fa-star-o" aria-hidden="true" (click)="selectStar(item?.ratings[item?.ratings?.length - 1]?.ratingValue + i+1, item)"></i>
+                          </ng-container>
+                          
+                    </p>
+                </div>
+            </div>
+        </div>
+        <hr>
+
+        <div class="row justify-content-end">
+            <div class="col-md-3 mr-md-4" style="margin-right: 15%;">
+                <div style="display: flex; justify-content:space-between; gap: 20%;">
+                    <h5>Subtotal</h5>
+                    <span>Rs. {{showOrder.subTotal}}</span>
+                </div>
+                <div style="display: flex; justify-content:space-between; gap: 20%;">
+                    <h5>Discount</h5>
+                    <span>{{showOrder.coupons ? showOrder.coupons : 0}}%</span>
+                </div>
+                <div style="display: flex; justify-content:space-between; gap: 20%;">
+                    <h5>Shipping</h5>
+                    <span>Rs. 0.00</span>
+                </div>
+                <div style="display: flex; justify-content:space-between; gap: 20%;">
+                    <h5>Total</h5>
+                    <span>Rs. {{showOrder.totalPrice}}</span>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="row">
+            <div class="col-md-9 mx-auto">
+                <hr>
+                <div class="row">
+                    <div class="col-md-4">
+                        <h3>Shipping Address</h3>
+                        <p>{{showOrder.address}}</p>
+                    </div>
+                    <div class="col-md-4">
+                        <h3>Billing Info</h3>
+                        <p>{{showOrder.address}}</p>
+                    </div>
+                    <div class="col-md-4">
+                        <button class="btn btn-warning w-100"><b>Track Order</b></button>
+                        <button class="btn btn-outline-success w-100 mt-2"><b>Return</b></button>
+                        <p>Question about this order? <a href="" style="text-decoration: none; color:darkblue; display: f;">Contact Us</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

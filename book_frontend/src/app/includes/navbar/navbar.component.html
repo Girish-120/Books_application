@@ -22,7 +22,9 @@
           </form> &nbsp;&nbsp;&nbsp;
           <button class="btn btn-danger" type="submit" (click)="signOut()">Logout</button> &nbsp;&nbsp;&nbsp;
        
-          <span style="color: whitesmoke; font-size: 20px; cursor: pointer;" routerLink="/cart-list"> <i class="fa fa-shopping-cart" aria-hidden="true"></i> Cart</span>
+          <span style="color: whitesmoke; font-size: 20px; cursor: pointer;" routerLink="/cart-list"> <i class="fa fa-shopping-cart" aria-hidden="true"></i> Cart 
+            <span class="cart-badge">{{cartLength}}</span>
+          </span>
         </div>
       </div>
   </nav>

@@ -5,7 +5,7 @@
     </div>
   </div>
   <hr>
-  
+
 
   <div class="row">
     <div class="col-md-3 mt-3">
@@ -15,7 +15,8 @@
             <div class="col-sm-6" style="margin-top: 15px;">
               <h3 class="filter_heading">Categories</h3>
             </div>
-            <div class="col-sm-6 icon" (click)="openDiv('author')"><i class="fa fa-plus icons" aria-hidden="true"></i></div>
+            <div class="col-sm-6 icon" (click)="openDiv('author')"><i class="fa fa-plus icons" aria-hidden="true"></i>
+            </div>
             <div class="row listItem" *ngIf="authorList" style="margin-left: -2px;">
               <p>Clothing</p>
               <p>Electronics</p>
@@ -32,7 +33,8 @@
             <div class="col-sm-6">
               <h3 class="filter_heading">Author</h3>
             </div>
-            <div class="col-sm-6 icon" (click)="openDiv('language')"><i style="margin: 10px 0px 0px 79px;" class="fa fa-plus" aria-hidden="true"></i></div>
+            <div class="col-sm-6 icon" (click)="openDiv('language')"><i style="margin: 10px 0px 0px 79px;"
+                class="fa fa-plus" aria-hidden="true"></i></div>
             <div class="row listItem" *ngIf="languageList" style="margin-left: -2px;">
               <p>A. J. Finn</p>
               <p>Anne Frank</p>
@@ -48,7 +50,8 @@
             <div class="col-sm-6">
               <h3 class="filter_heading">Language</h3>
             </div>
-            <div class="col-sm-6 icon" (click)="openDiv('review')"><i style="margin: 10px 0px 0px 79px;" class="fa fa-plus" aria-hidden="true"></i></div>
+            <div class="col-sm-6 icon" (click)="openDiv('review')"><i style="margin: 10px 0px 0px 79px;"
+                class="fa fa-plus" aria-hidden="true"></i></div>
             <div class="row listItem reviewItems" *ngIf="reviewList" style="margin-left: -2px;">
               <div class="row">
                 <div class="col-sm-2"><input type="checkbox" name="" id=""></div>
@@ -102,7 +105,7 @@
                 </div>
                 <div class="col-sm-2"><span>(24)</span></div>
               </div>
-              
+
 
             </div>
           </div>
@@ -112,11 +115,14 @@
             <div class="col-sm-6">
               <h3 class="filter_heading">Featured</h3>
             </div>
-            <div class="col-sm-6 icon" (click)="openDiv('featured')"><i style="margin: 10px 0px 0px 79px;" class="fa fa-plus" aria-hidden="true"></i></div>
+            <div class="col-sm-6 icon" (click)="openDiv('featured')"><i style="margin: 10px 0px 0px 79px;"
+                class="fa fa-plus" aria-hidden="true"></i></div>
             <div class="row listItem" *ngIf="featuredList" style="margin-left: -2px;">
               <div class="row mb-2">
                 <div class="col-sm-4">
-                  <img src="https://demo2.madrasthemes.com/bookworm-html/redesigned-octo-fiesta/assets/img/150x226/img1.jpg" alt="" >
+                  <img
+                    src="https://demo2.madrasthemes.com/bookworm-html/redesigned-octo-fiesta/assets/img/150x226/img1.jpg"
+                    alt="">
                 </div>
                 <div class="col-sm-8">
                   <p>Lessons Learned from 15 Years as CEO...</p>
@@ -125,7 +131,9 @@
               </div>
               <div class="row mb-2">
                 <div class="col-sm-4">
-                  <img src="https://demo2.madrasthemes.com/bookworm-html/redesigned-octo-fiesta/assets/img/150x226/img1.jpg" alt="" >
+                  <img
+                    src="https://demo2.madrasthemes.com/bookworm-html/redesigned-octo-fiesta/assets/img/150x226/img1.jpg"
+                    alt="">
                 </div>
                 <div class="col-sm-8">
                   <p>Lessons Learned from 15 Years as CEO...</p>
@@ -134,7 +142,9 @@
               </div>
               <div class="row mb-2">
                 <div class="col-sm-4">
-                  <img src="https://demo2.madrasthemes.com/bookworm-html/redesigned-octo-fiesta/assets/img/150x226/img1.jpg" alt="" >
+                  <img
+                    src="https://demo2.madrasthemes.com/bookworm-html/redesigned-octo-fiesta/assets/img/150x226/img1.jpg"
+                    alt="">
                 </div>
                 <div class="col-sm-8">
                   <p>Lessons Learned from 15 Years as CEO...</p>
@@ -161,7 +171,8 @@
         </div>
         <div class="carousel-inner">
           <div class="carousel-item active">
-            <img src="assets/pexels-aline-viana-prado-2465877.jpg" class="d-block w-100" alt="..." style="height:450px;">
+            <img src="assets/pexels-aline-viana-prado-2465877.jpg" class="d-block w-100" alt="..."
+              style="height:450px;">
           </div>
           <div class="carousel-item">
             <img src="assets/pexels-thought-catalog-904616.jpg" class="d-block w-100" alt="..." style="height:450px;">
@@ -187,7 +198,8 @@
           <h4><span class="text-success">Total books:</span> {{bookLength}}</h4>
         </div>
         <div class="col-md-4">
-          <select name="" id="" (change)="sortItemsByPrice($event)" style="margin-left:100px;width: 63%;border:none;font-size: 16px;font-weight: 500;">
+          <select name="" id="" (change)="sortItemsByPrice($event)"
+            style="margin-left:100px;width: 63%;border:none;font-size: 16px;font-weight: 500;">
             <option value="default">Default Sorting</option>
             <option value="newness">Newness</option>
             <option value="asc">Low to High</option>
@@ -204,32 +216,56 @@
           </select>
         </div> -->
         <div class="col-md-2" id="btnContainer" style="margin-top: -10px;">
-          <button class="btn" (click)="listView()"><i class="fa fa-bars"></i> List</button> 
+          <button class="btn" (click)="listView()"><i class="fa fa-bars"></i> List</button>
           <button class="btn active" (click)="gridView()"><i class="fa fa-th-large"></i> Grid</button>
         </div>
       </div>
       <hr>
 
       <div class="row">
-        <div class="col-md-4 mb-2 column" *ngFor="let books of allBooks| paginate: { itemsPerPage: 10, currentPage: p }">
+        <div class="col-md-4 mb-2 column"
+          *ngFor="let books of allBooks| paginate: { itemsPerPage: 10, currentPage: p }">
           <div class="card like" style="width: 18rem;">
-            <i class="bi bi-trash-fill d-flex justify-content-end" style="color: red;cursor: pointer;margin: 10px;" (click)="deleteBook(books._id)"></i>
+            <i class="bi bi-trash-fill d-flex justify-content-end" style="color: red;cursor: pointer;margin: 10px;"
+              (click)="deleteBook(books._id)"></i>
             <div class="text-center">
-                <img [lazyLoad]="'http://localhost:8080/'+books.image?.path" defaultImage="assets\bb-social-share-v1.jpg" alt="Uploaded Image" class="card-img-top" style="width: 200px; height: 230px;">
+              <img [lazyLoad]="'http://localhost:8080/'+books.image?.path" defaultImage="assets\bb-social-share-v1.jpg"
+                alt="Uploaded Image" class="card-img-top" style="width: 200px; height: 230px;">
             </div>
             <div class="card-body">
               <h5 class="card-title book-name">{{books.book_name}}</h5>
               <p class="card-text card-content">{{books.book_description}}</p>
               <span>{{books.author_name}}</span>
               <h5>$ {{books.price}}</h5>
+
+              <ng-container *ngIf="books.averageRating !== undefined">
+                <ng-container *ngIf="books.averageRating; else noRating">
+                  <ng-container *ngFor="let star of getStarArray(books.averageRating)">
+                    <i class="fa fa-star filled" aria-hidden="true"></i>
+                  </ng-container>
+
+                  <ng-container *ngFor="let star of getEmptyStarArray(books.averageRating)">
+                    <i class="fa fa-star-o" aria-hidden="true"></i>
+                  </ng-container>
+                </ng-container>
+              </ng-container>
+
+              <ng-template #noRating>
+                <ng-container *ngFor="let star of getEmptyStarArray(0)">
+                  <i class="fa fa-star-o" aria-hidden="true"></i>
+                </ng-container>
+              </ng-template> <br><br>
+
+
               <a class="btn btn-primary" (click)="addToCart(books._id)">ADD TO CART</a>
-              <a data-bs-toggle="modal" data-bs-target="#exampleModal" class="btn btn-success" style="margin-left: 41px;padding: 6px 25px;" (click)="editBookById(books)">EDIT</a>
+              <a data-bs-toggle="modal" data-bs-target="#exampleModal" class="btn btn-success"
+                style="margin-left: 41px;padding: 6px 25px;" (click)="editBookById(books)">EDIT</a>
             </div>
           </div>
         </div>
         <pagination-controls (pageChange)="p = $event"></pagination-controls>
       </div>
-      
+
       <!-- Edit Modal -->
       <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
@@ -242,23 +278,28 @@
               <form [formGroup]="editForm" (ngSubmit)="editBooks()">
                 <div class="form-group">
                   <label for="exampleInputEmail1">Book name</label>
-                  <input formControlName="book_name" type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter book name">
+                  <input formControlName="book_name" type="text" class="form-control" id="exampleInputEmail1"
+                    aria-describedby="emailHelp" placeholder="Enter book name">
                 </div>
                 <div class="form-group">
                   <label for="exampleInputPassword1">Book description</label>
-                  <input formControlName="book_description" type="text" class="form-control" id="exampleInputPassword1" placeholder="Enter book description">
+                  <input formControlName="book_description" type="text" class="form-control" id="exampleInputPassword1"
+                    placeholder="Enter book description">
                 </div>
                 <div class="form-group">
                   <label for="authorname">Author name</label>
-                  <input formControlName="author_name" type="text" class="form-control" id="authorname" placeholder="Enter Author name">
+                  <input formControlName="author_name" type="text" class="form-control" id="authorname"
+                    placeholder="Enter Author name">
                 </div>
                 <div class="form-group">
                   <label for="publishdate">Publish date</label>
-                  <input formControlName="publish_date" type="date" class="form-control" id="publishdate" placeholder="Enter publish date">
+                  <input formControlName="publish_date" type="date" class="form-control" id="publishdate"
+                    placeholder="Enter publish date">
                 </div>
                 <div class="form-group">
                   <label for="bookPrice">Author name</label>
-                  <input formControlName="price" type="number" class="form-control" id="bookPrice" placeholder="Enter Book price">
+                  <input formControlName="price" type="number" class="form-control" id="bookPrice"
+                    placeholder="Enter Book price">
                 </div>
                 <div class="modal-footer">
                   <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -272,29 +313,28 @@
     </div>
   </div>
 </div>
-<div class="container-fluid mt-5">
+<div class="container">
   <div class="mb-5 mb-lg-10">
-      <div class="row mb-3">
-          <div class="col-md-5">
-              <hr>
-          </div>
-          <div class="col-md-2 text-center">
-              <h3>Latest Book</h3>
-          </div>
-          <div class="col-md-5">
-              <hr>
-          </div>
+    <div class="row mb-3">
+      <div class="col-md-5">
+        <hr>
       </div>
+      <div class="col-md-2 text-center">
+        <h3>Latest Book</h3>
+      </div>
+      <div class="col-md-5">
+        <hr>
+      </div>
+    </div>
 
-      <div class="owl-carousel">
-          <div class="slider-item" *ngFor="let books of allBooks">
-            <div class="text-center">
-              <img [lazyLoad]="'http://localhost:8080/'+books.image?.path" defaultImage="assets\bb-social-share-v1.jpg" alt="Uploaded Image" class="card-img-top" style="width: 200px; height: 230px;margin-left: 80px;">
-            </div>
-            <h5 class="card-title book-name">{{books.book_name}}</h5>
-            <p class="card-text card-content">{{books.book_description}}</p>
-            <span>{{books.author_name}}</span>
-          </div>
+    <div class="owl-carousel">
+      <div class="slider-item" *ngFor="let books of allBooks">
+        <img [lazyLoad]="'http://localhost:8080/'+books.image?.path" defaultImage="assets\bb-social-share-v1.jpg"
+          alt="Uploaded Image" class="card-img-top" style="width: 200px; height: 230px;margin-left: 32px;">
+        <h5 class="card-title book-name">{{books.book_name}}</h5>
+        <p class="card-text card-content">{{books.book_description}}</p>
+        <span>{{books.author_name}}</span>
       </div>
+    </div>
   </div>
 </div>

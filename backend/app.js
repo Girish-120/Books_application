@@ -10,10 +10,9 @@ app.use(bodyParser.urlencoded({extended:false}))
 app.use(bodyParser.json());
 app.use(cors());
 
-// app.use(route);
+app.use(route);
 
 app.listen(8080,()=>{
     console.log("Server is started on 8080");
 })
 
-app.use(route);

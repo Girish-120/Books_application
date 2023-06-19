@@ -1,0 +1,35 @@
+#content{
+    background-color: #fff6f6;
+    height: 100%;
+}
+
+.content-row{
+    background-color:white;
+    padding-left: 0px;
+    padding-right: 0px;
+    margin: 10px 0px;
+}
+
+.content-row table{
+    width: 100%;
+}
+
+.table-row th{
+    padding: 1.6rem 2rem
+}
+
+.content-row tbody tr td{
+    padding: 1.6rem 2rem;
+}
+
+
+
+.fa-star,
+.fa-star-o {
+  color: gold;
+  font-size: 1.2rem;
+}
+
+.filled {
+  color: gold;
+}

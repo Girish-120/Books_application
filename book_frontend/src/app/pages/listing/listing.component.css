@@ -1,54 +1,58 @@
-.author .icon{
-    text-align: center;
-    top: 8px;
-    position: relative;
-    cursor: pointer;
-}
-.language .icon{
-    text-align: center;
-    top: 8px;
-    position: relative;
-    cursor: pointer;
-}
-.review .icon{
-    text-align: center;
-    top: 8px;
-    position: relative;
-    cursor: pointer;
-}
-.featured .icon{
+.author .icon {
     text-align: center;
     top: 8px;
     position: relative;
     cursor: pointer;
 }
 
-.listItem{
+.language .icon {
+    text-align: center;
+    top: 8px;
+    position: relative;
+    cursor: pointer;
+}
+
+.review .icon {
+    text-align: center;
+    top: 8px;
+    position: relative;
+    cursor: pointer;
+}
+
+.featured .icon {
+    text-align: center;
+    top: 8px;
+    position: relative;
+    cursor: pointer;
+}
+
+.listItem {
     padding: 0px 20px;
 }
 
-.listItem img{
+.listItem img {
     width: 100%;
     height: 100%;
 }
 
-.reviewItems i{
+.reviewItems i {
     color: #ffbd00;
 }
 
-.sideDiv{
+.sideDiv {
     padding: 0px 25px;
 }
 
-.breadcrumb a{
+.breadcrumb a {
     text-decoration: none;
     color: black;
 }
-.breadcrumb{
+
+.breadcrumb {
     font-size: 20px;
 }
 
-.card-content{
+.card-content {
     display: -webkit-box;
     -webkit-line-clamp: 3;
     -webkit-box-orient: vertical;
@@ -57,7 +61,7 @@
     overflow: hidden;
 }
 
-.book-name{
+.book-name {
     display: -webkit-box;
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
@@ -66,40 +70,41 @@
     overflow: hidden;
 }
 
-.filter_heading{
+.filter_heading {
     font-size: 18px;
     font-weight: 500;
     margin: 15px 18px;
 }
 
-.line{
+.line {
     width: 109%;
     margin-left: -11px;
 }
 
-.icons{
+.icons {
     margin: 24px 0px 0px 80px;
 }
 
-.aboutImg img{
+.aboutImg img {
     background-size: cover;
     width: 100%;
 }
-.aboutImg{
+
+.aboutImg {
     padding: 0;
 }
 
-.main-container{
+.main-container {
     position: relative;
     top: -100px;
 }
 
-.user-conatiner{
+.user-conatiner {
     font-size: 25px;
     font-weight: 600;
 }
 
-.feature__icon i{
+.feature__icon i {
     color: #f75454;
     font-size: 50px;
 }
@@ -109,33 +114,46 @@
 
     margin: 0px 26px;
     width: 96%;
-  }
-  
-  .owl-carousel .slider-item {
+}
+
+.owl-carousel .slider-item {
     text-align: center;
-  }
-  
-  .owl-carousel .slider-item img {
+}
+
+.owl-carousel .slider-item img {
     display: block;
     width: 100%;
     height: auto;
     border-radius: 5px;
-  }
+}
 
-  .newsletter input{
+.newsletter input {
     width: 40vw;
     height: 60px;
-  }
+}
 
-  .newsletter button{
+.newsletter button {
     background-color: black;
     color: whitesmoke;
     height: 100%;
     width: 8vw;
-  }
+}
 
-  .project{
-    font-weight:700;
+.project {
+    font-weight: 700;
     font-size: 30px;
-  }
-  
+}
+
+.fa-star,
+.fa-star-o {
+    color: gold;
+    font-size: 1.2rem;
+}
+
+.filled {
+    color: gold;
+}
+
+.empty {
+    color: lightgray;
+}

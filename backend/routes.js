@@ -5,7 +5,15 @@ const jwt = require("jsonwebtoken");
 const checkAuth = require('./middleware/check-auth');
 const Post = require('../backend/model/post.js');
 const Blog = require("../backend/model/blog.js");
+const Orders = require("../backend/model/orders.js");
+const allCoupons = require("../backend/model/coupons.js");
+const Payment = require("../backend/model/payment.js");
 const mongoType = require('mongoose').Types;
+const svgCaptcha = require('svg-captcha');
+
+// const stripe = require('stripe')('sk_test_51NIsILSJr3Tp8j6wbD6GVBz3wnUKsvTRHjkkXI4o0IRjr580NDzcnH1HvH3z26wbSfykhtbDeeRZkbfJE9RgxtH000vOnU49F2');
+
+const stripe = require('stripe')('sk_test_tR3PYbcVNZZ796tH88S4VQ2u');
 
 const path = require('path');
 const express = require('express');
@@ -29,6 +37,7 @@ router.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 var quantity = [];
 var totalPrice = 0;
+let captchaText = '';
 
 
 // Register
@@ -141,7 +150,7 @@ router.post('/createbook', upload.single('image'), (req, res) => {
 })
 
 //create blog
-router.post('/createblog',upload.single('image'), (req, res) => {
+router.post('/createblog', upload.single('image'), (req, res) => {
     const { originalname, path } = req.file;
 
     let blog = new Blog({
@@ -167,16 +176,34 @@ router.post('/createblog',upload.single('image'), (req, res) => {
 
 //get all books
 router.get('/getallbooks', (req, res) => {
-    Post.find().then((books, err) => {
-        const booklength = books.length;
-        if (books) {
-            res.send({ success: true, message: 'Books fetch successfully', book_length: booklength, books });
-        } else {
-            res.status(400).send({ success: false, message: 'Internal Error!' })
-        }
-    }).catch(err => {
-        res.status(400).send({ success: false, message: 'Internal Error!', err });
-    })
+    try {
+        Post.find().then((books) => {
+            const booklength = books.length;
+
+            const booksWithRatings = books.map((book) => {
+                const ratings = book.ratings.map((rating) => ({
+                    ratingId: rating._id,
+                    value: rating.ratingValue,
+                    userId: rating.userId
+                }));
+
+                const values = ratings.map(rating => rating.value);
+                const totalRatings = values.length;
+                const sumRatings = values.reduce((acc, rating) => acc + rating, 0);
+                const average = Math.round(sumRatings / totalRatings);
+
+                const bookWithRatings = Object.assign({}, book._doc, {
+                    averageRating: average
+                });
+
+                return bookWithRatings;
+            });
+
+            res.send({ success: true, message: 'Books fetch successfully', book_length: booklength, books: booksWithRatings });
+        })
+    } catch (error) {
+        res.status(500).json({ success: false, message: 'Internal server error', err: error });
+    }
 
 })
 
@@ -307,11 +334,11 @@ router.get('/getCartList', async (req, res) => {
         const matchedProducts = quantity.map(product => {
             const book = books.find(book => book._id.equals(product.productId));
             if (book) {
-              const totalPrice = book.price * product.quantity;
-              return { totalPrice };
+                const totalPrice = book.price * product.quantity;
+                return { totalPrice };
             }
-          });
-          const totalPrice = matchedProducts.reduce((sum, product) => sum + product.totalPrice, 0);
+        });
+        const totalPrice = matchedProducts.reduce((sum, product) => sum + product.totalPrice, 0);
 
         res.status(200).json({ success: true, message: 'Cart List Fetched Successfully!', books, totalPrice });
     } catch (err) {
@@ -425,5 +452,369 @@ router.get('/filter', async (req, res) => {
         res.json(filteredBooks);
     }
 });
+
+// Captcha API
+router.get('/captcha', (req, res) => {
+    const captcha = svgCaptcha.create();
+    captchaText = captcha.text;
+    res.setHeader('Content-Type', 'image/svg+xml');
+    res.status(200).json({ data: captcha.data });
+});
+
+// Place order
+router.post("/place-order", async (req, res) => {
+    const { userId, address, totalPrice, coupons, subTotal, orderNumber } = req.body;
+
+    try {
+        const user = await User.findById(userId);
+
+        // if (!captchaText || captchaText.toLowerCase() !== captchaTxt.toLowerCase()) {
+        //     return res.status(400).json({ message: 'Invalid CAPTCHA' });
+        // } else {
+        if (!orderNumber) {
+            let order = new Orders({
+                userId,
+                products: user.cart,
+                address,
+                totalPrice,
+                coupons,
+                subTotal,
+                orderNumber: Math.floor(1000 + Math.random() * 9000).toString(),
+                createdAt: new Date(),
+            })
+            order.save().then((orders, err) => {
+                if (orders) {
+                    res.send({ success: true, message: 'Order Placed successfully', userId: order.userId, orderNumber: orders.orderNumber });
+                } else {
+                    res.status(400).send({ success: false, message: 'Order Failed!' });
+                }
+            }).catch(err => {
+                res.status(400).send({ success: false, message: 'Internal Error!', err });
+            })
+        } else {
+            let order = new Orders({
+                userId,
+                products: user.cart,
+                address,
+                totalPrice,
+                coupons,
+                subTotal,
+                orderNumber,
+                createdAt: new Date(),
+            })
+            order.save().then((orders, err) => {
+                if (orders) {
+                    res.send({ success: true, message: 'Order Placed successfully', userId: order.userId, orderNumber: orders.orderNumber });
+                } else {
+                    res.status(400).send({ success: false, message: 'Order Failed!' });
+                }
+            }).catch(err => {
+                res.status(400).send({ success: false, message: 'Internal Error!', err });
+            })
+        }
+
+        // }   
+
+
+    } catch (error) {
+        res.status(500).json({ success: false, error: 'Internal server error' });
+    }
+})
+
+// Get Order api
+router.get('/getOrder/:orderNumber/:userId', async (req, res) => {
+    try {
+        const orderNumber = req.params.orderNumber;
+        const user = await User.findById(req.params.userId);
+        const order = await Orders.findOne({ orderNumber });
+        if (!order) {
+            res.status(404).json({ error: 'Order not found.' });
+            return;
+        } else {
+
+            const getAllProductIds = () => {
+                const productIds = order.products.map(product => product.productId);
+                return productIds;
+            };
+            const ids = getAllProductIds().map(objectId => objectId.toString());
+
+            const books = await Post.find({
+                _id: { $in: ids }
+            });
+
+            const newArray = books.map((item) => {
+                const matchingData = user.cart.find(
+                    (data) => data.productId.equals(item._id)
+                );
+                if (matchingData) {
+                    return { ...item._doc, quantity: matchingData.quantity };
+                }
+                return item;
+            });
+
+            if (order) {
+                user.cart = [];
+                await user.save();
+            }
+
+            res.status(200).json({ books: newArray, totalPrice: order.totalPrice, subTotal: order.subTotal, orderNumber: order.orderNumber, address: order.address, coupon: order.coupons, createdAt: order.createdAt });
+
+        }
+
+    } catch (error) {
+        res.status(500).json({ error: 'Internal server error', err: error });
+    }
+})
+
+// Get all orders
+router.get('/getAllOrders/:userId', async (req, res) => {
+    try {
+        const userId = req.params.userId;
+        const order = await Orders.find({ userId });
+
+        if (!order) {
+            res.status(404).json({ error: 'Order not found.' });
+            return;
+        } else {
+
+            const getAllProductIds = () => {
+                const productIds = order.flatMap(order => order.products.map(product => product.productId));
+                return productIds;
+            };
+            const ids = getAllProductIds().map(objectId => objectId.toString());
+
+            const books = await Post.find({
+                _id: { $in: ids }
+            });
+
+            // Loop through each order
+            const updatedOrders = order.map(order => {
+                const updatedProducts = order.products.map(product => {
+
+                    const matchingBook = books.find((data) => data._id.equals(product.productId));
+                    return {
+                        ...matchingBook._doc,
+                        quantity: product.quantity
+                    };
+                });
+                // Date Format
+                const formattedDate = formatDate(order.createdAt);
+                return {
+                    ...order._doc,
+                    date: formattedDate,
+                    products: updatedProducts
+                };
+            });
+
+            res.status(200).json({ success: true, message: "All Orders Fetched Successfully!", allOrders: updatedOrders });
+        }
+
+    } catch (error) {
+        res.status(500).json({ error: 'Internal server error', err: error });
+    }
+})
+
+// Genarate coupons by Admin
+router.get('/generateCoupons', async (req, res) => {
+    try {
+        // Generate the specified number of coupons with expiry times
+        const coupons = generateCoupons('3');
+
+        allCoupons.find().then((item) => {
+            if (item.length < 3) {
+                allCoupons.create(coupons)
+                    .then(() => {
+                        res.json({ message: `${coupons.length} coupons generated and saved to the database` });
+                    })
+                    .catch((error) => {
+                        res.status(500).json({ error: 'Failed to generate and save coupons' });
+                    });
+            } else {
+                res.status(500).json({ error: 'Limit Exceed' });
+            }
+        }).catch((error) => {
+            res.status(500).json({ error: 'Failed to fetch coupons' });
+        });
+
+    } catch (error) {
+        res.status(500).json({ error: 'Internal server error', err: error });
+    }
+})
+
+// getAll Coupons
+router.get('/getAllCoupons', (req, res) => {
+    try {
+        allCoupons.find().then((item) => {
+            res.json({ coupons: item });
+        })
+    } catch (error) {
+        res.status(500).json({ error: 'Internal server error', err: error });
+    }
+})
+
+// Validate and Discount Coupon
+router.post('/validateCoupon', async (req, res) => {
+    try {
+        const code = req.body.code
+        const coupon = await allCoupons.findOne({ code });
+
+        if (!coupon) {
+            res.status(404).json({ error: 'Coupon not found.' });
+            return;
+        } else {
+            res.json(coupon)
+        }
+
+    } catch (error) {
+        res.status(500).json({ error: 'Internal server error', err: error });
+    }
+})
+
+// Payment Gatway
+router.post('/payment', async (req, res) => {
+    try {
+        const { cardNumber, expiryMonth, expiryYear, cvc, amount, customerName, customerAddress, description } = req.body;
+
+        if (!cardNumber || !expiryMonth || !expiryYear || !cvc || !amount || !customerName || !customerAddress || !description) {
+            res.status(400).json({ error: 'Missing required payment details' });
+        }
+
+        // Generate a test token using Stripe.js or the Stripe API
+        const token = await stripe.tokens.create({
+            card: {
+                number: cardNumber,
+                exp_month: expiryMonth,
+                exp_year: expiryYear,
+                cvc: cvc,
+            },
+        });
+
+        // Process the payment with Stripe
+        const paymentIntent = await stripe.paymentIntents.create({
+            amount: amount,
+            currency: 'inr',
+            payment_method_types: ['card'],
+            payment_method_data: {
+                type: 'card',
+                card: {
+                    token: token.id,
+                },
+            },
+            confirm: true,
+            description: description,
+            metadata: {
+                customerName: customerName, // Include customer name in metadata
+                customerAddress: customerAddress, // Include customer address in metadata
+            },
+        });
+
+        // Save payment details to the database
+        const payment = new Payment({
+            amount: paymentIntent.amount,
+            orderNumber: Math.floor(1000 + Math.random() * 9000).toString(),
+            currency: paymentIntent.currency,
+            paymentMethod: paymentIntent.payment_method_types[0],
+            status: paymentIntent.status,
+            customerName: paymentIntent.metadata.customerName,
+            customerAddress: paymentIntent.metadata.customerAddress,
+            paymentID: paymentIntent.id
+        });
+        await payment.save();
+
+        // Payment successful
+        res.status(200).json({ success: true, message: "Payment Successfull!", paymentDetails: payment })
+
+
+
+    } catch (error) {
+        res.status(500).json({ success: false, message: 'Internal server error', err: error });
+    }
+})
+
+router.post("/star-rating", (req, res) => {
+    try {
+        const { id } = req.body;
+        const { ratingValue } = req.body;
+        const { userId } = req.body;
+
+        Post.findByIdAndUpdate(id, { $push: { ratings: { userId: userId, ratingValue: ratingValue } } }, { new: true })
+            .then((updatedBook) => {
+                if (!updatedBook) {
+                    return res.status(404).json({ error: 'Book not found' });
+                }
+                res.json(updatedBook);
+            })
+            .catch((error) => {
+                res.status(500).json({ error: 'Failed to update book rating' });
+            });
+
+    } catch (error) {
+        res.status(500).json({ success: false, message: 'Internal server error', err: error });
+    }
+})
+
+
+
+
+// Change Date Format
+function formatDate(dateString) {
+    const date = new Date(dateString);
+    const year = date.getUTCFullYear();
+    const month = `0${date.getUTCMonth() + 1}`.slice(-2);
+    const day = `0${date.getUTCDate()}`.slice(-2);
+    const hours = `0${date.getUTCHours()}`.slice(-2);
+    const minutes = `0${date.getUTCMinutes()}`.slice(-2);
+    const seconds = `0${date.getUTCSeconds()}`.slice(-2);
+
+    return `${day}/${month}/${year}, ${hours}:${minutes}:${seconds}`;
+}
+
+// Generate Coupons
+function generateCoupons(quantity) {
+    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+    const length = 8;
+    const coupons = [];
+
+    for (let i = 0; i < quantity; i++) {
+        let couponCode = '';
+
+        const expiryDate = new Date();
+        // for one day
+        expiryDate.setDate(expiryDate.getDate() + 1);
+
+        for (let j = 0; j < length; j++) {
+            const randomIndex = Math.floor(Math.random() * characters.length);
+            couponCode += characters[randomIndex];
+        }
+
+        const coupon = {
+            code: couponCode,
+            discount: Math.floor(Math.random() * 30) + 1,
+            expiryDate: expiryDate
+        };
+
+        coupons.push(coupon);
+    }
+
+    return coupons;
+}
+
+// Function to delete expired coupons
+async function deleteExpiredCoupons() {
+    const currentDate = new Date();
+    const expiredCoupons = await allCoupons.find({ expiryDate: { $lte: currentDate } });
+    if (expiredCoupons.length > 0) {
+        const result = await allCoupons.deleteMany({ _id: { $in: expiredCoupons.map(coupon => coupon._id) } });
+        console.log('Deleted expired coupons:', result.deletedCount);
+    } else {
+        console.log('No expired coupons to delete');
+    }
+}
+// Schedule automatic deletion of expired coupons
+// setInterval(() => {
+//     deleteExpiredCoupons()
+// }, 10000);
+// setInterval(deleteExpiredCoupons, 24 * 60 * 60 * 1000);
+
 
 module.exports = router;

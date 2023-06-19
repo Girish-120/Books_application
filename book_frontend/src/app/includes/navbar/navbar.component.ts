@@ -7,20 +7,24 @@ import { ListingComponent } from 'src/app/pages/listing/listing.component';
   selector: 'app-navbar',
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.css'],
-  providers:[
+  providers: [
     ListingComponent
   ]
 })
 export class NavbarComponent implements OnInit {
 
-  query:any;
+  query: any;
+  cartLength:any;
 
-  constructor(private route:Router, private service:AppServiceService, private listing:ListingComponent) { }
+  constructor(private route: Router, private service: AppServiceService, private listing: ListingComponent) { }
 
   ngOnInit(): void {
+    this.service.cartChanged().subscribe((res: any) => {
+      this.cartLength = res
+    })
   }
 
-  signOut(){
+  signOut() {
     localStorage.clear();
     this.route.navigate(['/']);
   }
@@ -28,8 +32,8 @@ export class NavbarComponent implements OnInit {
   search() {
     if (!this.query) {
       this.listing.getAllBooks();
-    }else{
-      this.service.getBooks(`/search?query=${this.query}`).subscribe((res:any)=>{
+    } else {
+      this.service.getBooks(`/search?query=${this.query}`).subscribe((res: any) => {
         this.service.bookFetched(res)
       })
     }
