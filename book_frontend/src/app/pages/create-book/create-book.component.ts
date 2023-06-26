@@ -28,7 +28,7 @@ export class CreateBookComponent implements OnInit {
   })
 
   onSelectFile(event:any) {
-    this.image = event.target.files[0];
+    this.image = event.target.files;
   }
  
   submitBook(){
@@ -39,7 +39,11 @@ export class CreateBookComponent implements OnInit {
     formData.append('author_name', this.bookDetails.value.author_name);
     formData.append('publish_date', this.bookDetails.value.publish_date);
     formData.append('price', this.bookDetails.value.price);
-    formData.append('image', this.image, this.image.name);
+    // formData.append('image', this.image, this.image.name);
+
+    for (let i = 0; i < this.image.length; i++) {
+      formData.append('image', this.image[i]);
+    }
     
     this.service.books('/createbook',formData).subscribe((res:any)=>{
       if(res.success == true){

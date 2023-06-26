@@ -157,3 +157,7 @@
 .empty {
     color: lightgray;
 }
+
+.code {
+    -webkit-line-clamp: 2;
+  }

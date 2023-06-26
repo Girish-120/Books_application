@@ -20,7 +20,7 @@
                         <label for="">Price</label>
                         <input type="number" class="form-control" formControlName="price" placeholder="Enter Price">
                         <label for="">Upload Image</label>
-                        <input type="file"  class="form-control" id="image" name="image" (change)="onSelectFile($event)" required>
+                        <input type="file"  class="form-control" id="image" name="image" multiple (change)="onSelectFile($event)" required>
                     </div> <br>
 
                     <div class="d-grid gap-2">

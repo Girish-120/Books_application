@@ -11,10 +11,10 @@ const Post = mongoose.model('post',{
         ratingValue: {type: Number}
       }],
     image:
-    {
+    [{
         filename: String,
         path: String
-    }
+    }]
 })
 
 module.exports = Post;

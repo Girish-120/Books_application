@@ -18,6 +18,7 @@ import { CartlistComponent } from './pages/cartlist/cartlist.component';
 import { BrowserAnimationsModule  } from '@angular/platform-browser/animations';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { GetOrdersComponent } from './pages/get-orders/get-orders.component';
+import { DetailsComponent } from './pages/details/details.component';
 
 @NgModule({
   declarations: [
@@ -30,7 +31,8 @@ import { GetOrdersComponent } from './pages/get-orders/get-orders.component';
     ProfileComponent,
     CreateBookComponent,
     CartlistComponent,
-    GetOrdersComponent
+    GetOrdersComponent,
+    DetailsComponent
   ],
   imports: [
     BrowserModule,

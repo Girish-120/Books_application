@@ -1,0 +1,187 @@
+<div class="card-wrapper">
+    <div class="card">
+        <!-- card left -->
+        <div class="product-imgs">
+            <div class="img-display">
+                <div class="img-showcase">
+                    <img *ngFor="let book of oneBook.image" [src]="'http://localhost:8080/'+book.path" alt="Book image"
+                        height="500px" width="500px">
+                </div>
+            </div>
+            <div class="img-select">
+
+                <div class="img-item" *ngFor="let book of oneBook.image; let i=index">
+                    <a href="#" id="{{i+1}}">
+                        <img [src]="'http://localhost:8080/'+book.path" alt="Book image" height="153px" width="153px">
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- card right -->
+        <div class="product-content" *ngIf="oneBook">
+            <h2 class="product-title">{{oneBook.book_name}}</h2>
+            <div class="product-rating">
+                <ng-container *ngIf="oneBook.averageRating !== undefined">
+                    <ng-container *ngIf="oneBook.averageRating; else noRating">
+                      <ng-container *ngFor="let star of getStarArray(oneBook.averageRating)">
+                        <i class="fa fa-star filled" aria-hidden="true"></i>
+                      </ng-container>
+    
+                      <ng-container *ngFor="let star of getEmptyStarArray(oneBook.averageRating)">
+                        <i class="fa fa-star-o" aria-hidden="true"></i>
+                      </ng-container>
+                    </ng-container>
+                  </ng-container>
+    
+                  <ng-template #noRating>
+                    <ng-container *ngFor="let star of getEmptyStarArray(0)">
+                      <i class="fa fa-star-o" aria-hidden="true"></i>
+                    </ng-container>
+                  </ng-template> &nbsp;
+                <span>{{oneBook.averageRating}}({{oneBook.ratings?.length}})</span>
+            </div>
+
+            <div class="product-price">
+                <p class="last-price">Old Price: <span>${{oneBook.price}}</span></p>
+                <p class="new-price">New Price: <span>${{oneBook.price}} (0%)</span></p>
+            </div>
+
+            <div class="product-detail">
+                <h2>about this item: </h2>
+                <p>{{oneBook.book_description}}</p>
+                <ul>
+                    <li>Available: <span>in stock</span></li>
+                    <li>Category: <span>Books</span></li>
+                    <li>Shipping Area: <span>All over the world</span></li>
+                    <li>Shipping Fee: <span>Free</span></li>
+                </ul>
+            </div>
+
+            <div class="purchase-info">
+                <button type="button" class="btn">
+                    Add to Cart <i class="fa fa-shopping-cart"></i>
+                </button>
+            </div>
+
+            <div class="social-links">
+                <p>Share At: </p>
+                <a href="#">
+                    <i class="fa fa-facebook-f"></i>
+                </a>
+                <a href="#">
+                    <i class="fa fa-twitter"></i>
+                </a>
+                <a href="#">
+                    <i class="fa fa-instagram"></i>
+                </a>
+                <a href="#">
+                    <i class="fa fa-whatsapp"></i>
+                </a>
+                <a href="#">
+                    <i class="fa fa-pinterest"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="col-md-12 mt-5 secondDiv" style="max-width: 1300px;margin: 0 auto;">
+    <ul style="display: flex;">
+        <li class="active" (click)="descriptionDiv()" id="descriptionTab"><a>Description</a></li>
+        <li (click)="reviewDiv()" id="reviewTab"><a>Reviews (1)</a></li>
+    </ul>
+
+    <div class="descrp" id="descrp">
+        <h6>DESCRIPTION</h6>
+        <p>{{oneBook.book_description}}</p>
+    </div>
+
+    <div class="rate" id="rate">
+        <h5>1 REVIEW FOR TERRIBLE MADNESS</h5>
+        <div class="row mt-3"  *ngFor="let rate of oneBook.ratings">
+            <div class="col-md-1 rateImg">
+               <div class="rateIcon"> <i class="fa fa-smile-o" aria-hidden="true"></i></div>
+            </div>
+            <div class="col-md-11">
+                <div class="product-rating">
+                    <ng-container *ngIf="rate.ratingValue !== undefined">
+                        <ng-container *ngIf="rate.ratingValue; else noRating">
+                          <ng-container *ngFor="let star of getStarArray(rate.ratingValue)">
+                            <i class="fa fa-star filled" aria-hidden="true"></i>
+                          </ng-container>
+        
+                          <ng-container *ngFor="let star of getEmptyStarArray(rate.ratingValue)">
+                            <i class="fa fa-star-o" aria-hidden="true"></i>
+                          </ng-container>
+                        </ng-container>
+                      </ng-container>
+        
+                      <ng-template #noRating>
+                        <ng-container *ngFor="let star of getEmptyStarArray(0)">
+                          <i class="fa fa-star-o" aria-hidden="true"></i>
+                        </ng-container>
+                      </ng-template>
+                </div>
+                <h5>BRIAN</h5>
+                <p class="product-rating">– Sep 15, 2022</p>
+                <p>Dicta sunt explicabo. Nemo enim ipsam voluptatem voluptas sit odit aut fugit, sed quia consequuntur. Lorem ipsum dolor.</p>
+            </div>
+        </div>
+
+        <div class="review mt-2 mb-2">
+            <div class="review-Wrapper">
+                <div class="row heading mt-3">
+                    <div class="col-md-12">
+                        <h5>Add a Review</h5>
+                    </div>
+                </div>
+
+                <div class="row mt-3">
+                    <div class="col-md-12">
+                        <h6>Your email address will not be published. Required fields are marked *</h6>
+                    </div>
+                </div>
+                <div class="row mt-3">
+                    <div class="col-md-12 d-flex">
+                        <h6>Your rating *</h6> &nbsp;&nbsp;
+                        <div class="product-rating">
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star-o"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="row mt-3">
+                    <div class="col-md-12">
+                        <h6>Your review *</h6>
+                         <textarea name="rev" id="rev" cols="30" rows="10" style="width: 100%;"></textarea>
+                    </div>
+                </div>
+                <div class="row mt-3">
+                    <div class="col-md-6">
+                        <h6>Name *</h6>
+                         <input type="text" style="width: 100%;">
+                    </div>
+                    <div class="col-md-6">
+                        <h6>Email *</h6>
+                         <input type="email" style="width: 100%;">
+                    </div>
+                </div>
+                <div class="row mt-3">
+                    <div class="col-md-12 d-flex">
+                        <input type="checkbox"> &nbsp; &nbsp;
+                        <h6>Save my name, email, and website in this browser for the next time I comment.</h6>
+                    </div>
+                </div>
+                <div class="row mt-3">
+                    <div class="col-md-12 d-flex">
+                        <button type="submit" class="submitBtn">Submit</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

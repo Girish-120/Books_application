@@ -22,6 +22,7 @@ export class ProfileComponent implements OnInit {
       if(data.success == true){
         this.profileData = data.data
         this.addAddress.patchValue({'userId':this.profileData._id})
+        this.service.cartFetched(this.profileData.cart.length);
       }
     });
   }

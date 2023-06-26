@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AppServiceService } from 'src/app/service/app-service.service';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
+import { Router } from '@angular/router';
 
 declare var $:any;
 declare var listView:any;
@@ -27,8 +28,10 @@ export class ListingComponent implements OnInit {
   items:any = [];
   p: number = 1;
   bookLength: any;
+  allAuthors:any;
+  ratingCounts:any;
 
-  constructor(private service:AppServiceService,private fb:FormBuilder,private toast:ToastrService) { }
+  constructor(private service:AppServiceService,private fb:FormBuilder,private toast:ToastrService, private route:Router) { }
 
   ngOnInit(): void {
     this.getAllBooks();
@@ -38,6 +41,7 @@ export class ListingComponent implements OnInit {
       }  
     })
     this.getProfile();
+    this.getAuthors();
   }
 
   getProfile(){
@@ -68,7 +72,11 @@ export class ListingComponent implements OnInit {
     this.service.getBooks('/getallbooks').subscribe((res:any)=>{
       this.allBooks = res.books
       this.bookLength = res.book_length;
+      this.ratingCounts = res.ratingCounts
       owl();
+
+      console.log(this.allBooks);
+      
     })
   }
 
@@ -146,6 +154,25 @@ export class ListingComponent implements OnInit {
   getEmptyStarArray(quantity:any): number[] {
     const emptyStars = quantity !== undefined ? (5 -quantity) : 5;
     return Array(emptyStars).fill(0);
+  }
+
+  getAuthors(){
+    this.service.getBooks("/getAllAuthors").subscribe((data:any)=>{
+      if(data.success == true){
+        this.allAuthors = data.authors
+      }
+    });
+  }
+
+  bookByAuthor(item:any) {
+      this.service.getBooks(`/search?query=${item}`).subscribe((res: any) => {
+        this.allBooks = res.books
+        this.bookLength = res.books.length;
+      })
+  }
+
+  goToDetails(id:any){
+    this.route.navigate(["/details/"+id._id]);
   }
 
 }
