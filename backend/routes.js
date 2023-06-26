@@ -124,8 +124,14 @@ router.post('/upload-photo', upload.single('profilePhoto'), checkAuth, async (re
 })
 
 //create book
-router.post('/createbook', upload.single('image'), (req, res) => {
-    const { originalname, path } = req.file;
+router.post('/createbook', upload.array('image', 5), (req, res) => {
+    const images = req.files.map((file) => {
+        return {
+          filename: file.originalname,
+          path: file.path
+        };
+      });
+
 
     let book = new Post({
         book_name: req.body.book_name,
@@ -133,9 +139,7 @@ router.post('/createbook', upload.single('image'), (req, res) => {
         author_name: req.body.author_name,
         publish_date: req.body.publish_date,
         price: req.body.price,
-        image: {
-            filename: originalname, path
-        }
+        image: images
     })
 
     book.save().then((books, err) => {
@@ -199,12 +203,32 @@ router.get('/getallbooks', (req, res) => {
                 return bookWithRatings;
             });
 
-            res.send({ success: true, message: 'Books fetch successfully', book_length: booklength, books: booksWithRatings });
+            const avg = booksWithRatings.map(book => book.averageRating)
+            const ratingCounts = {
+                Five: avg.filter(value => value === 5).length,
+                Four: avg.filter(value => value === 4).length,
+                Three: avg.filter(value => value === 3).length,
+                Two: avg.filter(value => value === 2).length,
+                One: avg.filter(value => value === 1).length
+              };
+
+            res.send({ success: true, message: 'Books fetch successfully', book_length: booklength, books: booksWithRatings, ratingCounts });
         })
     } catch (error) {
         res.status(500).json({ success: false, message: 'Internal server error', err: error });
     }
 
+})
+
+// get all authors name
+router.get('/getAllAuthors', async (req, res) => {
+    try {
+        const books = await Post.find();
+        const authors = [...new Set(books.map(book => book.author_name))];
+        res.send({ success: true, message: 'All Authors fetched successfully!', authors });
+    } catch (error) {
+        res.status(500).json({ success: false, message: 'Internal server error', err: error });
+    }
 })
 
 //get all blogs
@@ -242,12 +266,21 @@ router.get("/getbook/:id", (req, res) => {
     if (mongoType.ObjectId.isValid(req.params.id)) {
         Post.findById(req.params.id).then((books, err) => {
             if (books) {
-                res.send({ success: true, message: 'book fetch successfully', books });
+                const values = books.ratings.map(rating => rating.ratingValue);
+                const totalRatings = values.length;
+                const sumRatings = values.reduce((acc, rating) => acc + rating, 0);
+                const average = Math.round(sumRatings / totalRatings);
+                const bookData = {
+                    ...books._doc,
+                    averageRating: average
+                  };
+
+                res.send({ success: true, message: 'book fetch successfully', books:bookData });
             } else {
                 res.status(400).send('Internal Error' + err);
             }
-        }).catch(err => {
-            res.status(400).send("Not record found by this id");
+        }).catch(err => {   
+            res.status(500).json({ success: false, message: 'Internal server error', err: err });
         })
     }
 })
@@ -752,7 +785,6 @@ router.post("/star-rating", (req, res) => {
         res.status(500).json({ success: false, message: 'Internal server error', err: error });
     }
 })
-
 
 
 
